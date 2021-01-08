@@ -1,0 +1,255 @@
+﻿body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+#bk-contactos {
+    background-image: url(/img/Imagens_site/strawberries-1330459_1920.jpg);
+    background-repeat: no-repeat;
+}
+
+.row p {
+    color: black;
+    font-size: medium;
+}
+
+.row {
+    margin-inline: 82px;
+}
+
+.dados_contato {
+}
+
+header img.displayed {
+    margin-top: -81px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}
+
+
+.area-login p {
+    text-align: center;
+    font-size: 22px;
+    color: black;
+    text-shadow: none;
+}
+
+#btn-bars {
+    display: none;
+}
+
+header hr {
+    margin-top: -101px;
+    margin-bottom: 2px;
+    border: black 4px solid;
+    width: 100%;
+    position: absolute;
+}
+
+#icons-menu {
+    position: absolute;
+    right: 0;
+    margin-top: 0px;
+    z-index: 3;
+}
+
+#btn-search {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 25px;
+    margin-top: 170px;
+    margin-inline: 11px;
+}
+
+#btn-users {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 25px;
+    margin-top: 170px;
+    margin-inline: 11px;
+}
+
+body .container {
+    width: 100%
+}
+
+.nav-link {
+    margin-inline: 44px;
+    text-shadow: 1px 4px 7px #000000;
+}
+
+.menu-item a {
+    color: black;
+    font-size: x-large;
+    font-style: italic;
+    margin-right: 20px;
+}
+
+#frutas-central {
+    width: 138%;
+    margin-top: 42px;
+    margin-inline: -206px;
+}
+
+section h1.displayed {
+    font-size: 100px;
+    color: white;
+    font-family: monospace;
+    margin-top: -617px;
+    text-align: center;
+}
+
+
+section .btn {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btn-central {
+    width: 200px;
+    height: 48px;
+    font-family: monospace;
+    font-size: 25px;
+    margin-inline: 43px;
+    background: orange;
+    color: white;
+    border-color: white;
+    border-radius: 20px;
+    border-style: solid;
+    text-shadow: 1px 4px 7px #000000;
+}
+
+.texto-pricipal {
+    position: absolute;
+    text-align: center;
+    margin-top: -42%;
+    width: 100%;
+}
+
+    .texto-pricipal h3, p {
+        color: white;
+        font-size: xxx-large;
+        font-style: italic;
+        text-shadow: 1px 4px 7px #000000;
+    }
+
+.card-text {
+    display: block;
+    color: black;
+}
+
+.card-title {
+    text-shadow: 1px 4px 7px #000000;
+    color: black;
+}
+
+.col-xl-4 {
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: -9px;
+}
+
+#footer-contact {
+    margin-top: 41%;
+}
+
+.top-footer {
+    padding-top: 39px;
+}
+
+.footer-black {
+    background-color: black;
+    height: 289px;
+    /*margin-top: 409px;*/
+    position: absolute;
+    width: 101%;
+}
+
+footer hr {
+    margin-top: -11px;
+    margin-bottom: 2px;
+    border-bottom: grey 3px solid;
+    width: 100%;
+    position: absolute;
+}
+
+.footer-black p {
+    color: white;
+    font-size: 19px;
+    position: relative;
+    margin-top: 19px;
+    margin-left: 29px;
+}
+#redes_sociais_footer {
+    float: right;
+    margin-right: 18px;
+    position: relative;
+    
+}
+
+#img-footer {
+    width: 69%;
+}
+
+.row a, h4 {
+    color: white;
+}
+
+.row li, h4 {
+    margin-bottom: 5px;
+}
+/*Pordutos*/
+
+.card img:hover {
+    opacity: 0.5;
+    transition: 1s;
+}
+
+.Login_Register_Page {
+    width: 100vw;
+    background: rgba(222, 227, 201, 1.8);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+
+    .Login_Register_Page a {
+        font-size: x-large;
+        color: ghostwhite;
+    }
+
+    .Login_Register_Page form {
+        width: 50%;
+        text-align: center;
+    }
+
+    .Login_Register_Page input {
+        text-align: center;
+    }
+
+    .Login_Register_Page hr {
+        border-top: 3px solid #000;
+    }
+
+#primeiro_t {
+    color: white;
+    margin-top: -22%;
+    position: absolute;
+    display: flex;
+    left: 10%;
+}
+
+#segundo_t {
+    color: white;
+    margin-top: -22%;
+    position: absolute;
+    display: flex;
+    right: 10%;
+}

@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="display: initial;">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <img src="~/img/Imagens_site/christmas-2918569_192022.jpg" alt="Los Angeles" style="width:100%;">
+        </div>
+
+        <div class="item">
+            <img src="~/img/Imagens_site/blueberries-2278921_192022.jpg" alt="Chicago" style="width:100%;">
+        </div>
+
+        <div class="item">
+            <img src="~/img/Imagens_site/frutas.png" alt="New york" style="width:100%;">
+        </div>
+    </div>
+</div>
+
+
+<div class="texto-pricipal">
+    <h3>Encomende aqui os melhores produtos</h3>
+    <a id="btn-central" href="/CarrinhoCompras/Index" type="button" value="">Carrinho</a>
+    <a id="btn-central" href="/Home/Produto" type="button" value="">Produto</a>
+    <p>Os produtos mais frescos em nossa casa</p>
+    <p> EM SUA CASA</p>
+</div>
+
+<div class="text-center" style="margin-top:10px">
+    <h2>Em destaque esta semana..</h2>
+</div>
+<div class="col-xl-4">
+    <div class="card" style="border: none">
+        <img class="card-img-top" src="~/img/Imagens_site/abacaxi.png" alt="Card image cap">
+        <div class="card-body">
+            <h4 class="card-title">Abacaxi</h4>
+            <p class="card-text">
+                4.99 € KG
+            </p>
+            <a href="Home/Produto" class="btn btn-primary fa fa-shopping-cart"> Adicionar</a>
+        </div>
+    </div>
+</div>
+<div class="col-xl-4">
+    <div class="card" style="border: none">
+        <img class="card-img-top" src="~/img/Imagens_site/banana.png" alt="Card image cap">
+        <div class="card-body">
+            <h4 class="card-title">Banana</h4>
+            <p class="card-text">
+                0.99 € KG
+            </p>
+            <a href="Home/Produto" class="btn btn-primary fa fa-shopping-cart"> Adicionar</a>
+        </div>
+    </div>
+</div>
+<div class="col-xl-4">
+    <div class="card" style="border: none">
+        <img class="card-img-top" src="~/img/Imagens_site/kiwi.png" alt="Card image cap">
+        <div class="card-body">
+            <h4 class="card-title">Kiwi</h4>
+            <p class="card-text">
+                3.99 € KG
+            </p>
+            <a href="Home/Produto" class="btn btn-primary fa fa-shopping-cart"> Adicionar</a>
+        </div>
+    </div>
+</div>

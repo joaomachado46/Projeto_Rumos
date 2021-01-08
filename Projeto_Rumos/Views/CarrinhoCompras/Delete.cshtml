@@ -1,0 +1,40 @@
+﻿@model Models.CarrinhoCompra
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<div class="container">
+    <h1>Delete</h1>
+
+    <h3>Tem a certeza que quer remover este item do carrinho?</h3>
+    <div>
+        <h4>Produto</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Produto.Nome)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Produto.Nome)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Produto.Descricao)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Produto.Descricao)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Produto.Preco)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Produto.Preco)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="IdProduto" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Voltar a lista</a>
+        </form>
+    </div>
+</div>

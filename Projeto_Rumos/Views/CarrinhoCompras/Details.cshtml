@@ -1,0 +1,28 @@
+﻿@model Models.Produto
+
+@{
+    ViewData["Title"] = "Detalhe Produto";
+}
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <div>
+        
+        <hr />
+        <div class="col-xl-4">
+            <div class="card" style="border: none">
+                <img class="card-img-top" src="@Url.Action("GetImage", "Home", new { ProdutoId = Model.ProdutoId })" alt="Card image cap">
+                <div class="card-body">
+                    <form action="/CarrinhoCompras/Create/@Model.ProdutoId" method="post">
+                        <label class="card-title">@Model.Nome</label>
+                        <label class="card-text">@Model.Preco € KG</label>
+                        <label style="color: black; font-size: 16px;">@Model.Descricao</label>
+                        <br />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+            <a asp-action="Index" type="button" class="btn btn-secondary">Voltar aos produtos</a>
+        </div>
+    </div>
+</div>

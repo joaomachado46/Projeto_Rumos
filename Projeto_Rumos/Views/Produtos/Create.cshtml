@@ -1,0 +1,57 @@
+﻿@model Models.Produto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<div class="Login_Register_Page">
+    <form asp-action="Create">
+        <h1>Criar novo produto</h1>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Nome" class="control-label"></label>
+            <input asp-for="Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Preco" class="control-label"></label>
+            <input asp-for="Preco" class="form-control" step="0.01">
+            <span asp-validation-for="Preco" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descricao" class="control-label"></label>
+            <textarea asp-for="Descricao" class="form-control"></textarea>
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhotoFileName" class="control-label"></label>
+            <input asp-for="PhotoFileName" class="form-control" />
+            <span asp-validation-for="PhotoFileName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageMimeType" class="control-label"></label>
+            <input asp-for="ImageMimeType" class="form-control" />
+            <span asp-validation-for="ImageMimeType" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Stock" class="control-label"></label>
+            <input asp-for="Stock" class="form-control" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <a asp-action="Index" type="button" class="btn btn-secondary">Voltar aos produtos</a>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

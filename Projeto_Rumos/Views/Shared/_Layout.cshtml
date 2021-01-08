@@ -1,0 +1,171 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width:device-width, initial-scale=0.8">
+    <link href="~/css/PaginaPrincipal.css" rel="stylesheet" />
+    <link href="~/css/PaginaPrincipalMobile.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Frutaria</title>
+    <title>@ViewData["Title"] - Projeto_Rumos</title>
+</head>
+<body>
+    <header>
+        @await Html.PartialAsync("_LoginPartial.cshtml")
+        <div class="container">
+            <section id="icons-menu" class="pull-right">
+                <form action="CarrinhoCompras/Index" method="post">
+                    <input type="text" id="search" placeholder="search..." style="display: none;position: absolute;margin-top: 170px;right: 50px;">
+                    <button id="btn-search" type="button" class="fa fa-search" onclick="MudarestadoShow('search')"></button>
+                    <button id="btn-users" type="button" class="fa fa-users" onclick="MudarestadoShow('page-login')"></button>
+                    <button id="btn-search" type="submit" class="fa fa-shopping-cart"></button>
+                </form>
+            </section>
+            <img src="~/img/Imagens_site/frut2-semFundo.png" class="displayed" id="fruit-logo" />
+        </div>
+        <hr>
+        <section>
+            <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"
+                 style="position: relative;
+                        background: none;
+                        border-bottom: none;
+                        margin-top: -92px;
+                        float: left;
+                        z-index: 1;">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="background: black;">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav" style="display: inline-block; margin-left: 15px;">
+                            <li class="menu-item">
+                                <a href="/Home/Index" class="">Home</a>
+                            </li>
+                            <li class=" menu-item">
+                                <a href="/Produtos/Index" class="">Produtos</a>
+                            </li>
+                            <li class=" menu-item">
+                                <a href="/Home/Contacto" class="">Contacto</a>
+                            </li>
+                            <li class=" menu-item">
+                                <a href="/CarrinhoCompras/Index" class="">Carrinho</a>
+                            </li>
+                            <li class=" menu-item">
+                                <a href="/Home/Sobre" class="">Sobre</a>
+                            </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </section>
+    </header>
+
+    @await Html.PartialAsync("_LoginPartialView.cshtml")
+
+
+    <div class="">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer-black">
+        <div>
+            <div class="top-footer">
+                <div class="container container-v2">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4">
+                            <div class="info_footer">
+                                <div class="title_footer">
+                                    <h4 class="title_border">INFORMAÇÕES</h4>
+                                </div>
+                                <ul class="list-unstyled mb-0">
+
+                                    <li><a href="" title="Politica de Litigios">Politica</a></li>
+
+                                    <li><a href="" title="Privacidade">Privacidade</a></li>
+
+                                    <li><a href="" title="Politica Cookies">Politica Cookies</a></li>
+
+                                    <li><a href="https://www.livroreclamacoes.pt/inicio" title="Livro de Reclamaçoes">Livro de Reclamaçoes</a></li>
+
+                                    <li><a href="/Home/Contacto" title="Contactos">Contactos</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="info_footer">
+                                <div class="title_footer">
+                                    <h4 class="title_border">CONTACTOS</h4>
+                                </div>
+                                <ul class="list-unstyled mb-0">
+
+                                    <li><a href="#" title="TLM: 000000000">TLM: 00000000</a></li>
+
+                                    <li><a href="#" title="Loja Porto ">Loja Porto </a></li>
+
+                                    <li><a href="#" title="Loja Lisboa">Loja Lisboa</a></li>
+
+                                    <li><a href="/Home/Contacto" title="Email: geral@grupo1.com">Email: geral@grupo1.com</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="info_footer">
+                                <div class="title_footer">
+                                    <h4 class="title_border">COVID19</h4>
+                                </div>
+                                <ul class="list-unstyled mb-0">
+
+                                    <li><a href="/pages/entregas" title="De acordo com as regras exigidas pela DGS as entregas são feitas por um profissional que estará protegido e que a desinfeta as mãos antes e após cada entrega.">De acordo com as regras exigidas pela DGS as entregas são feitas por um profissional que estará protegido e que a desinfeta as mãos antes e após cada entrega.</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-12">
+                            <div class="info_footer end">
+                                <div class="title_footer">
+                                    <img href="/Home/Index" id="img-footer" src="~/img/Imagens_site/frut2-semFundo.png" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <p>Website De Grupo1 Rumos. Todos os Direitos Reservados...</p>
+            <div id="redes_sociais_footer">
+                <img src="~/img/Imagens_site/facebook_footer.png" alt="Alternate Text" />
+
+                <img src="~/img/Imagens_site/instagram_footer.png" alt="Alternate Text" />
+
+                <img src="~/img/Imagens_site/youtube_footer.png" alt="Alternate Text" />
+
+                <img src="~/img/Imagens_site/vine_footer.png" alt="Alternate Text" />
+            </div>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/js/login.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <script src="/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+</body>
+</html>

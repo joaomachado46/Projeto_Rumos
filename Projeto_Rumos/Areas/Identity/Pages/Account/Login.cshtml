@@ -1,0 +1,59 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+
+<div class="Login_Register_Page">
+
+    <form id="account" method="post">
+        <h1>@ViewData["Title"]</h1>
+        <h4></h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" class="form-control" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label asp-for="Input.RememberMe">
+                    <input asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </div>
+        <div class="form-group">
+            <p>
+                <a id="forgot-password" asp-page="./ForgotPassword">Esqueceu a password?</a>
+                <br />
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registar um novo usuário</a>
+            </p>
+        </div>
+        <hr />
+        <div style="margin-bottom: 23px;">
+            <img src="~/img/Imagens_site/facebook.png" alt="Alternate Text" />
+
+            <img src="~/img/Imagens_site/instagram.png" alt="Alternate Text" />
+
+            <img src="~/img/Imagens_site/youtube.png" alt="Alternate Text" />
+
+            <img src="~/img/Imagens_site/vine.png" alt="Alternate Text" />
+        </div>
+    </form>  
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

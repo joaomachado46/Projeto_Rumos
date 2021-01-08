@@ -1,0 +1,40 @@
+﻿@media screen and (max-width:768px) {
+    .texto-pricipal h3, p {
+        display: none;
+    }
+
+    .footer-black {
+        background-color: black;
+        height: 576px;
+    }
+
+    footer hr {
+        margin-top: 6px;
+        margin-bottom: 2px;
+        border-bottom: grey 3px solid;
+        width: 100%;
+        position: absolute;
+    }
+
+    .footer-black p {
+        display: block;
+        color: white;
+        font-size: 14px;
+        position: relative;
+        margin-top: 17px;
+        margin-left: 29px;
+    }
+
+    #img-footer {
+        display: none;
+    }
+    #icons-menu {
+        position: absolute;
+        right: 0;
+        margin-top: 72px;
+        z-index: 3;
+    }
+    #footer-contact {
+        margin-top: 20%;
+    }
+}

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Models.CarrinhoCompra>
+
+<div>
+    <img src="~/img/Imagens_site/shopping-cart-5187701_1280.jpg" alt="Alternate Text" style="width:100%" />
+    <h1 id="primeiro_t">O SEU</h1><h1 id="segundo_t">CARRINHO</h1>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Produto.Nome)</th>
+                <th>@Html.DisplayNameFor(model => model.Produto.Preco)</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @{float Total = 0.00f;}
+        @foreach (var item in Model)
+        {
+            @if (item.Produto != null)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.Produto.Nome</td>
+                        <td>@item.Produto.Preco € KG</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Produto.ProdutoId">Detalhe</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Produto.ProdutoId">Remover</a>
+                        </td>
+                    </tr>
+                </tbody>
+                Total += item.Produto.Preco;
+            }
+        }
+        <tbody>
+            <tr style="font-weight: 700;font-size: medium;">
+                <td>TOTAL</td>
+                <td>@Total.ToString("F2") €</td>
+            </tr>
+        </tbody>
+
+    </table>
+    <a href="" type="button" class="btn btn-success">Finalizar encomenda</a>
+    <a href="/Home/Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
+</div>
+
