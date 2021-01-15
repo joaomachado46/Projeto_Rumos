@@ -30,45 +30,75 @@ namespace Projeto_Rumos.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Produto()
-        {
-            return View(_dbContext.Produtos.ToList());
+            try
+            {
+                return View();
+            }
+            catch (Exception msg) { ErrorViewModel errorViewModel = new ErrorViewModel(); errorViewModel.RequestId = msg.Message; return View("_Error", errorViewModel); }
         }
 
         public IActionResult Sobre()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
+
         [Obsolete]
         public IActionResult GetImage(int produtoId)
         {
-            Produto requestedPhoto = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
-            if (requestedPhoto != null)
+            try
             {
-                string webRootpath = _environment.WebRootPath;
-                string folderPath = "\\img\\images_produtos\\";
-                string fullPath = webRootpath + folderPath + requestedPhoto.PhotoFileName;
-
-                FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
-                byte[] fileBytes;
-                using (BinaryReader br = new BinaryReader(fileOnDisk))
+                Produto requestedPhoto = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
+                if (requestedPhoto != null)
                 {
-                    fileBytes = br.ReadBytes((int)fileOnDisk.Length);
+                    string webRootpath = _environment.WebRootPath;
+                    string folderPath = "\\img\\images_produtos\\";
+                    string fullPath = webRootpath + folderPath + requestedPhoto.PhotoFileName;
+
+                    FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    byte[] fileBytes;
+                    using (BinaryReader br = new BinaryReader(fileOnDisk))
+                    {
+                        fileBytes = br.ReadBytes((int)fileOnDisk.Length);
+                    }
+                    return File(fileBytes, requestedPhoto.ImageMimeType);
                 }
-                return File(fileBytes, requestedPhoto.ImageMimeType);
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception msg)
             {
-                return NotFound();
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
             }
         }
 
         public IActionResult Contacto()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

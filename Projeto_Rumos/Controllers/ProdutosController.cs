@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using WebApplication2.Data;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Projeto_Rumos.Models;
 
 namespace Projeto_Rumos.Controllers
 {
@@ -21,33 +23,83 @@ namespace Projeto_Rumos.Controllers
         }
 
         // GET: Produtos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Produto()
         {
-            return View(await _context.Produtos.ToListAsync());
+            try
+            {
+                return View(await _context.Produtos.ToListAsync());
+            }
+            catch
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel
+                {
+                    RequestId = "Mensagem de erro"
+                };
+
+                return View("_Error", errorViewModel);
+            }
+
         }
 
         // GET: Produtos/Details/5
+        [HttpPost]
+        public IActionResult Procurar(string consulta)
+        {
+            try
+            {
+                var resultados = _context.Produtos
+                        .FirstOrDefault(m => m.Nome == consulta);
+
+                return View("Details", resultados);
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                Produto produto = new Produto();
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var produto = await _context.Produtos
-                .FirstOrDefaultAsync(m => m.ProdutoId == id);
-            if (produto == null)
+                produto = await _context.Produtos
+                    .FirstOrDefaultAsync(m => m.ProdutoId == id);
+
+                return View(produto);
+            }
+            catch (Exception msg)
             {
-                return NotFound();
-            }
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
 
-            return View(produto);
+                return View("_Error", errorViewModel);
+            }
         }
 
         // GET: Produtos/Create
+        [Authorize]
         public IActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         // POST: Produtos/Create
@@ -55,36 +107,55 @@ namespace Projeto_Rumos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string nome, string preco, string descricao, string photoFileName, string imageMimeType, int stock)
+        public async Task<IActionResult> Create(string nome, string preco, string descricao, string photoFileName, int stock)
         {
-
-            var precoCorreto = float.Parse(preco, CultureInfo.InvariantCulture.NumberFormat);
-
-            var produto = new Produto { Nome = nome, Preco = precoCorreto, Descricao = descricao, PhotoFileName = photoFileName, ImageMimeType = imageMimeType, Stock = stock };
-
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(produto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var precoCorreto = float.Parse(preco, CultureInfo.InvariantCulture.NumberFormat);
+
+                var produto = new Produto { Nome = nome, Preco = precoCorreto, Descricao = descricao, PhotoFileName = photoFileName, ImageMimeType = "image/jpeg", Stock = stock };
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(produto);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(produto);
             }
-            return View(produto);
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         // GET: Produtos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var produto = await _context.Produtos.FindAsync(id);
-            if (produto == null)
-            {
-                return NotFound();
+                var produto = await _context.Produtos.FindAsync(id);
+                if (produto == null)
+                {
+                    return NotFound();
+                }
+                return View(produto);
             }
-            return View(produto);
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         // POST: Produtos/Edit/5
@@ -94,50 +165,70 @@ namespace Projeto_Rumos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProdutoId,Nome,Preco,Descricao,PhotoFileName,ImageMimeType,Stock")] Produto produto)
         {
-            if (id != produto.ProdutoId)
+            try
             {
-                return NotFound();
-            }
+                if (id != produto.ProdutoId)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(produto);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProdutoExists(produto.ProdutoId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(produto);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ProdutoExists(produto.ProdutoId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Produto));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(produto);
             }
-            return View(produto);
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         // GET: Produtos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var produto = await _context.Produtos
-                .FirstOrDefaultAsync(m => m.ProdutoId == id);
-            if (produto == null)
+                var produto = await _context.Produtos
+                    .FirstOrDefaultAsync(m => m.ProdutoId == id);
+                if (produto == null)
+                {
+                    return NotFound();
+                }
+
+                return View(produto);
+            }
+            catch (Exception msg)
             {
-                return NotFound();
-            }
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
 
-            return View(produto);
+                return View("_Error", errorViewModel);
+            }
         }
 
         // POST: Produtos/Delete/5
@@ -145,10 +236,20 @@ namespace Projeto_Rumos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
-            _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var produto = await _context.Produtos.FindAsync(id);
+                _context.Produtos.Remove(produto);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Produto));
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         private bool ProdutoExists(int id)

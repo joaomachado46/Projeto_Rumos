@@ -1,76 +1,167 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Projeto_Rumos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using WebApplication2.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace Projeto_Rumos.Controllers
 {
     public class CarrinhoComprasController : Controller
     {
         private ApplicationDbContext _dbContext;
+        private readonly AuthenticatedUser _user;
+        readonly CarrinhoCompra carrinhoCompra = new CarrinhoCompra();
 
-        public CarrinhoComprasController(ApplicationDbContext dbContext)
+        public CarrinhoComprasController(ApplicationDbContext dbContext, AuthenticatedUser user)
         {
             _dbContext = dbContext;
-
+            _user = user;
         }
 
         [HttpPost]
-        public IActionResult Create(int id)
+        public IActionResult Create([FromBody] int id)
         {
-            try
+            if (User.Identity.IsAuthenticated)
             {
-                var prod = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == id);
-                CarrinhoCompra carrinhoCompra = new CarrinhoCompra { Produto = prod };
-                _dbContext.CarrinhoCompras.Add(carrinhoCompra);
-                _dbContext.SaveChanges();
+                var user = _user;
+                try
+                {
+                    var prod = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+                    var exist = _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).Where(x => x.ProdutoId == prod.ProdutoId && x.UsuarioId == Guid.Parse(user.Id)).Any();
 
-                return RedirectToAction(nameof(Index));
-            } catch (Exception)
+                    if (exist == false)
+                    {
+                        carrinhoCompra.ProdutoId = prod.ProdutoId;
+                        carrinhoCompra.UsuarioId = Guid.Parse(user.Id);
+
+                        _dbContext.Add(carrinhoCompra);
+                        _dbContext.SaveChanges();
+
+                        var sucesso = new { Sucesso = true, };
+                        return Json(sucesso);
+                    }
+                    else
+                    {
+                        var insucesso = new { Sucesso = false };
+                        return Json(insucesso);
+                        //ErrorViewModel errorViewModel = new ErrorViewModel();
+                        //errorViewModel.RequestId = "Produto ja adicionado ao carrinho";
+
+                        //return View("_Error", errorViewModel);
+                    }
+                }
+                catch
+                {
+                    ErrorViewModel errorViewModel = new ErrorViewModel();
+                    errorViewModel.RequestId = "Produto ja adicionado ao carrinho";
+
+                    return View("_Error", errorViewModel);
+                }
+            }
+            else
             {
-                return RedirectToAction("Index");
-            }   
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = "Login Necessario";
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         public IActionResult Details(int id)
         {
-            var produtoCarrinho = _dbContext.Produtos.FirstOrDefault(m => m.ProdutoId == id);
+            try
+            {
+                var produtoCarrinho = _dbContext.Produtos.FirstOrDefault(m => m.ProdutoId == id);
 
-            return View(produtoCarrinho);
+                return View(produtoCarrinho);
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(m => m.Produto.ProdutoId == id);
-            if (produto == null)
+                var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(m => m.Produto.ProdutoId == id);
+                if (produto == null)
+                {
+                    return NotFound();
+                }
+
+                return View(produto);
+            }
+            catch (Exception msg)
             {
-                return NotFound();
-            }
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
 
-            return View(produto);
+                return View("_Error", errorViewModel);
+            }
         }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(p => p.IdProduto == id);
-            _dbContext.CarrinhoCompras.Remove(produto);
-            await _dbContext.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(p => p.ProdutoId == id);
+                _dbContext.CarrinhoCompras.Remove(produto);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Carrinho));
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Carrinho()
         {
-            return View(await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).ToListAsync());
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = _user;
+                    return View(await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).Where(x => x.UsuarioId == Guid.Parse(user.Id)).ToListAsync());
+                }
+                else
+                {
+                    ErrorViewModel errorViewModel = new ErrorViewModel();
+                    errorViewModel.RequestId = "Necessario Login";
+
+                    return View("_Error", errorViewModel);
+                }
+               
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
         }
     }
 }

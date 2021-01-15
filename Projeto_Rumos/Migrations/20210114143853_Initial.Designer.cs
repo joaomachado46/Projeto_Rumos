@@ -10,16 +10,16 @@ using WebApplication2.Data;
 namespace Projeto_Rumos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210104185926_up")]
-    partial class up
+    [Migration("20210114143853_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -31,18 +31,18 @@ namespace Projeto_Rumos.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -53,7 +53,7 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -72,77 +72,12 @@ namespace Projeto_Rumos.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -164,12 +99,12 @@ namespace Projeto_Rumos.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -206,12 +141,12 @@ namespace Projeto_Rumos.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -226,14 +161,15 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("CarrinhoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("IdProduto")
                         .HasColumnType("int");
 
                     b.HasKey("CarrinhoId");
 
-                    b.HasIndex("IdProduto");
+                    b.HasIndex("IdProduto")
+                        .IsUnique();
 
                     b.ToTable("CarrinhoCompras");
                 });
@@ -243,7 +179,7 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("CategoriaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
@@ -270,7 +206,7 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("EncomendaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("Estado")
                         .HasColumnType("int");
@@ -316,13 +252,13 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("ProdutoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoriaId")
-                        .HasColumnType("int");
+                        .UseIdentityColumn();
 
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdCategoria")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageMimeType")
                         .HasColumnType("nvarchar(max)");
@@ -333,15 +269,15 @@ namespace Projeto_Rumos.Migrations
                     b.Property<string>("PhotoFileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Preco")
-                        .HasColumnType("float");
+                    b.Property<float>("Preco")
+                        .HasColumnType("real");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
                     b.HasKey("ProdutoId");
 
-                    b.HasIndex("CategoriaId");
+                    b.HasIndex("IdCategoria");
 
                     b.ToTable("Produtos");
 
@@ -350,80 +286,88 @@ namespace Projeto_Rumos.Migrations
                         {
                             ProdutoId = 1,
                             Descricao = "Banana importada da Colombia.",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Banana",
                             PhotoFileName = "banana1.jpg",
-                            Preco = 0.98999999999999999,
+                            Preco = 0.99f,
                             Stock = 10
                         },
                         new
                         {
                             ProdutoId = 2,
                             Descricao = "Clementina natural de Portugal",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Clementina",
                             PhotoFileName = "clementina.jpg",
-                            Preco = 0.79000000000000004,
+                            Preco = 0.79f,
                             Stock = 100
                         },
                         new
                         {
                             ProdutoId = 3,
                             Descricao = "Maça fuji, importada",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Maça Fuji",
                             PhotoFileName = "fuji.jpg",
-                            Preco = 0.58999999999999997,
+                            Preco = 0.59f,
                             Stock = 150
                         },
                         new
                         {
                             ProdutoId = 4,
                             Descricao = "Kiwi, directamente da nossa quinta",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Kiwi",
                             PhotoFileName = "kiwi.jpg",
-                            Preco = 3.9900000000000002,
+                            Preco = 3.99f,
                             Stock = 300
                         },
                         new
                         {
                             ProdutoId = 5,
                             Descricao = "O melhor limão de Portugal",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Limão",
                             PhotoFileName = "limao-siciliano.jpg",
-                            Preco = 0.98999999999999999,
+                            Preco = 0.99f,
                             Stock = 150
                         },
                         new
                         {
                             ProdutoId = 6,
                             Descricao = "O melhor melão. Importado do Brasil",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Melão",
                             PhotoFileName = "melao.jpg",
-                            Preco = 1.99,
+                            Preco = 1.99f,
                             Stock = 200
                         },
                         new
                         {
                             ProdutoId = 7,
                             Descricao = "Pera natural, diretamente da nossa quinta",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Peras",
                             PhotoFileName = "peras.jpg",
-                            Preco = 0.98999999999999999,
+                            Preco = 0.99f,
                             Stock = 200
                         },
                         new
                         {
                             ProdutoId = 8,
                             Descricao = "Uva do Alentejo",
+                            IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
                             Nome = "Uva",
                             PhotoFileName = "uvas.jpg",
-                            Preco = 1.29,
+                            Preco = 1.29f,
                             Stock = 300
                         });
                 });
@@ -433,7 +377,7 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("UsuarioId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("CartaoIdentificacao")
                         .HasColumnType("int");
@@ -521,6 +465,110 @@ namespace Projeto_Rumos.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models_Class.Pagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CarrihoCompraCarrinhoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarrinhoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EncomendaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarrihoCompraCarrinhoId");
+
+                    b.HasIndex("EncomendaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Pagamentos");
+                });
+
+            modelBuilder.Entity("Projeto_Rumos.Areas.Identity.Pages.Account.UserData.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SobreNome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -532,7 +580,7 @@ namespace Projeto_Rumos.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Projeto_Rumos.Areas.Identity.Pages.Account.UserData.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -541,7 +589,7 @@ namespace Projeto_Rumos.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Projeto_Rumos.Areas.Identity.Pages.Account.UserData.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -556,7 +604,7 @@ namespace Projeto_Rumos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Projeto_Rumos.Areas.Identity.Pages.Account.UserData.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -565,7 +613,7 @@ namespace Projeto_Rumos.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Projeto_Rumos.Areas.Identity.Pages.Account.UserData.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -575,10 +623,12 @@ namespace Projeto_Rumos.Migrations
             modelBuilder.Entity("Models.CarrinhoCompra", b =>
                 {
                     b.HasOne("Models.Produto", "Produto")
-                        .WithMany()
-                        .HasForeignKey("IdProduto")
+                        .WithOne("Carrinho")
+                        .HasForeignKey("Models.CarrinhoCompra", "IdProduto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("Models.Encomenda", b =>
@@ -590,6 +640,10 @@ namespace Projeto_Rumos.Migrations
                     b.HasOne("Models.Usuario", "Usuario")
                         .WithMany("Encomendas")
                         .HasForeignKey("IdUsuario");
+
+                    b.Navigation("CarrinhoCompra");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Models.EncomendaProduto", b =>
@@ -601,17 +655,70 @@ namespace Projeto_Rumos.Migrations
                         .IsRequired();
 
                     b.HasOne("Models.Produto", "Produto")
-                        .WithMany()
+                        .WithMany("EncomendaProdutos")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Encomenda");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("Models.Produto", b =>
                 {
-                    b.HasOne("Models.Categoria", null)
+                    b.HasOne("Models.Categoria", "Categoria")
                         .WithMany("Produtos")
-                        .HasForeignKey("CategoriaId");
+                        .HasForeignKey("IdCategoria");
+
+                    b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("Models_Class.Pagamento", b =>
+                {
+                    b.HasOne("Models.CarrinhoCompra", "CarrihoCompra")
+                        .WithMany()
+                        .HasForeignKey("CarrihoCompraCarrinhoId");
+
+                    b.HasOne("Models.Encomenda", "Encomenda")
+                        .WithMany()
+                        .HasForeignKey("EncomendaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CarrihoCompra");
+
+                    b.Navigation("Encomenda");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Models.Categoria", b =>
+                {
+                    b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("Models.Encomenda", b =>
+                {
+                    b.Navigation("EncomendaProdutos");
+                });
+
+            modelBuilder.Entity("Models.Produto", b =>
+                {
+                    b.Navigation("Carrinho");
+
+                    b.Navigation("EncomendaProdutos");
+                });
+
+            modelBuilder.Entity("Models.Usuario", b =>
+                {
+                    b.Navigation("Encomendas");
                 });
 #pragma warning restore 612, 618
         }

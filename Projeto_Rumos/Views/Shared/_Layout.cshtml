@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -9,6 +8,7 @@
     <link href="~/css/login.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Frutaria</title>
     <title>@ViewData["Title"] - Projeto_Rumos</title>
@@ -16,10 +16,11 @@
 <body>
     <header>
         @await Html.PartialAsync("_LoginPartial.cshtml")
+
         <div class="container">
             <section id="icons-menu" class="pull-right">
-                <form action="CarrinhoCompras/Index" method="post">
-                    <input type="text" id="search" placeholder="search..." style="display: none;position: absolute;margin-top: 170px;right: 50px;">
+                @await Html.PartialAsync("_Search.cshtml")
+                <form action="/CarrinhoCompras/Carrinho" method="post">
                     <button id="btn-search" type="button" class="fa fa-search" onclick="MudarestadoShow('search')"></button>
                     <button id="btn-users" type="button" class="fa fa-users" onclick="MudarestadoShow('page-login')"></button>
                     <button id="btn-search" type="submit" class="fa fa-shopping-cart"></button>
@@ -51,13 +52,13 @@
                                 <a href="/Home/Index" class="">Home</a>
                             </li>
                             <li class=" menu-item">
-                                <a href="/Produtos/Index" class="">Produtos</a>
+                                <a href="/Produtos/Produto" class="">Produtos</a>
                             </li>
                             <li class=" menu-item">
                                 <a href="/Home/Contacto" class="">Contacto</a>
                             </li>
                             <li class=" menu-item">
-                                <a href="/CarrinhoCompras/Index" class="">Carrinho</a>
+                                <a href="/CarrinhoCompras/Carrinho" class="">Carrinho</a>
                             </li>
                             <li class=" menu-item">
                                 <a href="/Home/Sobre" class="">Sobre</a>
@@ -163,6 +164,8 @@
     <script src="~/js/login.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
     <script src="/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>

@@ -1,0 +1,16 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Ups!!.</h1>
+
+@if (Model.ShowRequestId)
+{
+    <label>
+        <code>@Model.RequestId</code>
+    </label>
+}
+<a href="/Produtos/Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
+
+

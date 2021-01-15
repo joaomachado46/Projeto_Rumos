@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models_Class;
+using Projeto_Rumos.Areas.Identity.Pages.Account;
+using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
 using System;
 
 namespace WebApplication2.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -17,7 +21,7 @@ namespace WebApplication2.Data
         public DbSet<Encomenda> Encomendas { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-
+        public DbSet<Pagamento> Pagamentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,7 +35,8 @@ namespace WebApplication2.Data
                     Descricao = "Banana importada da Colombia.",
                     PhotoFileName = "banana1.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 10
+                    Stock = 10,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -41,7 +46,8 @@ namespace WebApplication2.Data
                     Descricao = "Clementina natural de Portugal",
                     PhotoFileName = "clementina.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 100
+                    Stock = 100,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -51,7 +57,8 @@ namespace WebApplication2.Data
                     Descricao = "Maça fuji, importada",
                     PhotoFileName = "fuji.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 150
+                    Stock = 150,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -61,7 +68,8 @@ namespace WebApplication2.Data
                     Descricao = "Kiwi, directamente da nossa quinta",
                     PhotoFileName = "kiwi.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 300
+                    Stock = 300,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -71,7 +79,8 @@ namespace WebApplication2.Data
                     Descricao = "O melhor limão de Portugal",
                     PhotoFileName = "limao-siciliano.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 150
+                    Stock = 150,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -81,7 +90,8 @@ namespace WebApplication2.Data
                     Descricao = "O melhor melão. Importado do Brasil",
                     PhotoFileName = "melao.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 200
+                    Stock = 200,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -91,7 +101,8 @@ namespace WebApplication2.Data
                     Descricao = "Pera natural, diretamente da nossa quinta",
                     PhotoFileName = "peras.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 200
+                    Stock = 200,
+                    IdCategoria = 1
                 },
                 new Produto
                 {
@@ -101,7 +112,8 @@ namespace WebApplication2.Data
                     Descricao = "Uva do Alentejo",
                     PhotoFileName = "uvas.jpg",
                     ImageMimeType = "image/jpeg",
-                    Stock = 300
+                    Stock = 300,
+                    IdCategoria = 1
                 });
 
             base.OnModelCreating(modelBuilder);

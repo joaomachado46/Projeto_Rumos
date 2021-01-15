@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -7,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Projeto_Rumos.Areas.Identity.Pages.Account;
+using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
+using Projeto_Rumos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +37,25 @@ namespace Projeto_Rumos
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<AuthenticatedUser>();
+
+            services.AddAuthentication()
+            .AddGoogle(options =>
+                {
+                    options.ClientId = "442308774417-f1a23siosvt9ogpejbvnk6t3f99dfemt.apps.googleusercontent.com";
+                    options.ClientSecret = "qNOhgoMq2RcUL1PkA-K73odz";
+                });
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "714895086064263";
+                options.AppSecret = "1ae106909b1d2aa9bdf5f201f16a6602";
+                options.AccessDeniedPath = "/AccessDeniedPathInfo";
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -45,7 +67,7 @@ namespace Projeto_Rumos
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {

@@ -2,7 +2,7 @@
 
 namespace Projeto_Rumos.Migrations
 {
-    public partial class update : Migration
+    public partial class Initial2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

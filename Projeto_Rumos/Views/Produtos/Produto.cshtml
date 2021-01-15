@@ -4,7 +4,49 @@
 @{
     ViewData["Title"] = "Produtos";
 }
+<style>
+    .toggler {
+        width: 500px;
+        height: 200px;
+        position: fixed;
+        z-index: 10;
+        margin-top: -51%;
+        margin-inline: 40%;
+    }
 
+    #button {
+        padding: .5em 1em;
+        text-decoration: none;
+    }
+
+    #effect {
+        width: 390px;
+        height: 268px;
+        padding: 0.4em;
+        position: relative;
+        background-image: url(/img/Imagens_site/icon-1415760_640.png);
+        background-size: cover;
+        color: white;
+        border: none;
+        text-shadow: 1px 4px 7px #000000;
+        border-radius: 20px;
+    }
+
+        #effect h6 {
+            text-align: center;
+            color: white;
+            font-size: xx-large;
+            margin-top: 173px;
+        }
+
+        #effect h4 {
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: x-large;
+            color: white;
+        }
+</style>
 <div class="" style="text-align: center;">
     <p class="into" style="POSITION: absolute; z-index: 1; margin-left: 15%; font-size: 227%;">OS SEUS</p>
     <p class="into" style="POSITION: relative; margin-top: 14%; z-index: 1; margin-left: 32%; font-size: 227%;">PRODUTOS</p>
@@ -14,7 +56,14 @@
                 WIDTH: 100%;
                 display: block;" />
 </div>
-
+<div class="toggler">
+    <div id="effect" class="ui-widget-content ui-corner-all">
+        <h4 id="ProdutoAdd" class="ui-widget-header ui-corner-all">Produto adicionado no</h4>
+        <h6>
+            Obrigado
+        </h6>
+    </div>
+</div>
 <br />
 @foreach (var item in Model)
 {
@@ -22,12 +71,12 @@
         <div class="card" style="border: none;text-align: center">
             <img class="card-img-top" src="@Url.Action("GetImage", "Home", new { ProdutoId = item.ProdutoId })" alt="Card image cap" style="width: 70%;align-self: center;">
             <div class="card-body">
-                <form action="/CarrinhoCompras/Create/@item.ProdutoId" method="post">
+                <form action="" method="post">
                     <h4 class="card-title">@item.Nome</h4>
                     <p class="card-text" style="font-size: xx-large; font-style: italic; text-shadow: 1px 4px 7px #000000;">@item.Preco € KG</p>
                     <p style="color: black;font-size: 16px;text-shadow: 1px 4px 7px #000000">@item.Descricao</p>
                     <br />
-                    <button type="submit" class="btn btn-primary fa fa-shopping-cart"> Adicionar</button>
+                    <button type="button" class="btn btn-primary fa fa-shopping-cart" onclick="encomendar(@item.ProdutoId)"> Adicionar</button>
                 </form>
             </div>
         </div>
@@ -37,6 +86,5 @@
 <div class="container">
     <p>
         <h4>Adicionar novo produto:<a asp-action="Create" style="font-size:initial"> Clique aqui</a></h4>
-        
     </p>
 </div>

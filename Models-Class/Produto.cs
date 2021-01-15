@@ -24,12 +24,13 @@ namespace Models
         public string ImageMimeType { get; set; }
         public int Stock { get; set; }
 
+
         public CarrinhoCompra Carrinho { get; set; }
 
-        //[ForeignKey("Categoria")]
-        //public int? IdCategoria { get; set; }
-        //public Categoria Categoria { get; set; }
+        [ForeignKey("Categoria")]
+        public int? IdCategoria { get; set; }
+        public Categoria Categoria { get; set; }
 
-        //public ICollection<EncomendaProduto> EncomendaProdutos { get; set; }
+        public ICollection<EncomendaProduto> EncomendaProdutos { get; set; }
     }
 }

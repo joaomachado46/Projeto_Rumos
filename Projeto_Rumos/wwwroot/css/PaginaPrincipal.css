@@ -226,11 +226,11 @@ footer hr {
     }
 
     .Login_Register_Page form {
-        width: 50%;
+        width: 100%;
         text-align: center;
     }
 
-    .Login_Register_Page input {
+    .Login_Register_Page input, button {
         text-align: center;
     }
 

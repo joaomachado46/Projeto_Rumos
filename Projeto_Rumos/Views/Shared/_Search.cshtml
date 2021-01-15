@@ -1,7 +1,16 @@
-﻿<section id="page-login" style="display: none">
-    <div id="menu-login-mask">
-        <div id="menu-login">
-            <input type="text" name="search" placeholder="procure o seu artigo..." />
-        </div>
-    </div>
-</section>
+﻿@inject WebApplication2.Data.ApplicationDbContext lista
+
+<form asp-controller="Produtos" asp-action="Procurar" method="post" id="search" style="        display: none;
+        position: absolute;
+        right: 48px;
+        margin-top: 169px;">
+    <input type="text" name="consulta" list="listaProdutos" style="height: 30px; width: 217px" />
+    <button type="submit" class="fa fa-search" style="position: absolute; right: 0; height: 27px; border: none; background: none;"></button>
+    <datalist id="listaProdutos">
+        @foreach (var item in lista.Produtos.ToList())
+        {
+            <option value="@item.Nome"></option>
+        }
+
+    </datalist>
+</form>
