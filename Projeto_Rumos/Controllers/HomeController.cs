@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Projeto_Rumos.Models;
 using WebApplication2.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Projeto_Rumos.Controllers
 {
@@ -37,6 +38,23 @@ namespace Projeto_Rumos.Controllers
             catch (Exception msg) { ErrorViewModel errorViewModel = new ErrorViewModel(); errorViewModel.RequestId = msg.Message; return View("_Error", errorViewModel); }
         }
 
+        public async Task<IActionResult> Produto()
+        {
+            try
+            {
+                return View(await _dbContext.Produtos.ToListAsync());
+            }
+            catch
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel
+                {
+                    RequestId = "Mensagem de erro"
+                };
+
+                return View("_Error", errorViewModel);
+            }
+
+        }
         public IActionResult Sobre()
         {
             try

@@ -52,7 +52,6 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            
             public string UserName { get; set; }
             public string SobreNome{ get; set; }
             public string Morada { get; set; }

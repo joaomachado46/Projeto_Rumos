@@ -22,6 +22,7 @@ namespace WebApplication2.Data
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pagamento> Pagamentos { get; set; }
+        public DbSet<Funcionario> Funcionarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

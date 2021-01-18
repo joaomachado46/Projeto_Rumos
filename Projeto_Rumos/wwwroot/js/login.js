@@ -53,10 +53,17 @@ function apresentar(dados) {
     if (dados.sucesso == true) {
         runEffect("blind");
     }
-    else
-        alert("Já está no carrinho...");
+    else if (dados.sucesso == false) {
+        alert("Produto já está no carrinho...");
+    }
+    else if (dados.necLogin == true) {
+        alert("Necessário login para adicionar produto");
+    }
 }
 
+function produtoadicionado(text) {
+    alert(text);
+}
 
 function runEffect(obj) {
     // get effect type from

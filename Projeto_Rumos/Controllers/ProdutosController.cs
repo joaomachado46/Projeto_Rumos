@@ -10,35 +10,56 @@ using WebApplication2.Data;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Projeto_Rumos.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Projeto_Rumos.Controllers
 {
     public class ProdutosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _WebHost;
 
-        public ProdutosController(ApplicationDbContext context)
+        public ProdutosController(ApplicationDbContext context, IWebHostEnvironment webHost)
         {
             _context = context;
+            _WebHost = webHost;
         }
 
         // GET: Produtos
-        public async Task<IActionResult> Produto()
+        
+        [HttpPost]
+        public async Task<IActionResult> SalvarImg(IFormFile ifile)
         {
             try
             {
-                return View(await _context.Produtos.ToListAsync());
-            }
-            catch
-            {
-                ErrorViewModel errorViewModel = new ErrorViewModel
+                string imgext = Path.GetExtension(ifile.FileName);
+                if (imgext == ".jpg" || imgext == ".gif" || imgext == ".png" || imgext == ".jpeg")
                 {
-                    RequestId = "Mensagem de erro"
-                };
+                    var saveimg = Path.Combine(_WebHost.WebRootPath, "img/images_produtos", ifile.FileName);
+                    var stream = new FileStream(saveimg, FileMode.Create);
+                    await ifile.CopyToAsync(stream);
+                    string nomeProduto = ifile.FileName;
+                    ViewBag.Message = "Imagem carregada: " + nomeProduto;
+                    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                    return View("Create");
+                }
+                else
+                {
+                    ViewBag.Message = "Erro!! Carregue uma imagem válida";
+                    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                    return View("Create");
+                }
+            }
+            catch (Exception msg)
+            {
+
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
 
                 return View("_Error", errorViewModel);
             }
-
         }
 
         // GET: Produtos/Details/5
@@ -86,11 +107,11 @@ namespace Projeto_Rumos.Controllers
         }
 
         // GET: Produtos/Create
-        [Authorize]
-        public IActionResult Create()
+        public IActionResult CreateProduto()
         {
             try
             {
+                ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
                 return View();
             }
             catch (Exception msg)
@@ -107,21 +128,25 @@ namespace Projeto_Rumos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string nome, string preco, string descricao, string photoFileName, int stock)
+        public async Task<IActionResult> Create(string nome, string preco, string descricao, string photoFileName, int stock, Categoria categoria)
         {
             try
             {
                 var precoCorreto = float.Parse(preco, CultureInfo.InvariantCulture.NumberFormat);
 
-                var produto = new Produto { Nome = nome, Preco = precoCorreto, Descricao = descricao, PhotoFileName = photoFileName, ImageMimeType = "image/jpeg", Stock = stock };
+                var produto = new Produto { Nome = nome, Preco = precoCorreto, Descricao = descricao, PhotoFileName = photoFileName, ImageMimeType = "image/jpeg", Stock = stock, IdCategoria = categoria.CategoriaId };
 
                 if (ModelState.IsValid)
                 {
                     _context.Add(produto);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+
+                    ViewBag.Message2 = "Produto adicionado com sucesso";
+                    return View();
                 }
-                return View(produto);
+
+                
+                return View();
             }
             catch (Exception msg)
             {
@@ -250,6 +275,10 @@ namespace Projeto_Rumos.Controllers
 
                 return View("_Error", errorViewModel);
             }
+        }
+        public IActionResult MenuGestaoProduto()
+        {
+            return View();
         }
 
         private bool ProdutoExists(int id)

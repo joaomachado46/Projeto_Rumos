@@ -10,8 +10,8 @@ using WebApplication2.Data;
 namespace Projeto_Rumos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210114154926_Initial2")]
-    partial class Initial2
+    [Migration("20210115171727_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,12 +163,15 @@ namespace Projeto_Rumos.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("IdProduto")
+                    b.Property<int>("ProdutoId")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CarrinhoId");
 
-                    b.HasIndex("IdProduto")
+                    b.HasIndex("ProdutoId")
                         .IsUnique();
 
                     b.ToTable("CarrinhoCompras");
@@ -245,6 +248,40 @@ namespace Projeto_Rumos.Migrations
                     b.HasIndex("ProdutoId");
 
                     b.ToTable("EncomendaProduto");
+                });
+
+            modelBuilder.Entity("Models.Funcionario", b =>
+                {
+                    b.Property<int>("IdFuncionario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FuncaoEmpregado")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("NumeroDeTrabalhador")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("IdFuncionario");
+
+                    b.ToTable("Funcionarios");
                 });
 
             modelBuilder.Entity("Models.Produto", b =>
@@ -490,8 +527,6 @@ namespace Projeto_Rumos.Migrations
 
                     b.HasIndex("EncomendaId");
 
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("Pagamentos");
                 });
 
@@ -624,7 +659,7 @@ namespace Projeto_Rumos.Migrations
                 {
                     b.HasOne("Models.Produto", "Produto")
                         .WithOne("Carrinho")
-                        .HasForeignKey("Models.CarrinhoCompra", "IdProduto")
+                        .HasForeignKey("Models.CarrinhoCompra", "ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -686,17 +721,9 @@ namespace Projeto_Rumos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("CarrihoCompra");
 
                     b.Navigation("Encomenda");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Models.Categoria", b =>

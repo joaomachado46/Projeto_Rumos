@@ -1,4 +1,4 @@
-﻿@media screen and (max-width:768px) {
+﻿@media screen and (max-width:900px) {
     .texto-pricipal h3, p {
         display: none;
     }
@@ -36,5 +36,12 @@
     }
     #footer-contact {
         margin-top: 20%;
+    }
+    #redes_sociais_footer {
+        float: right;
+        margin-right: 22px;
+        position: relative;
+        margin-top: 4px;
+        display: block;
     }
 }

@@ -63,6 +63,23 @@ namespace Projeto_Rumos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Funcionarios",
+                columns: table => new
+                {
+                    IdFuncionario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FuncaoEmpregado = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    NumeroDeTrabalhador = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Funcionarios", x => x.IdFuncionario);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
@@ -220,14 +237,15 @@ namespace Projeto_Rumos.Migrations
                 {
                     CarrinhoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdProduto = table.Column<int>(type: "int", nullable: false)
+                    ProdutoId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CarrinhoCompras", x => x.CarrinhoId);
                     table.ForeignKey(
-                        name: "FK_CarrinhoCompras_Produtos_IdProduto",
-                        column: x => x.IdProduto,
+                        name: "FK_CarrinhoCompras_Produtos_ProdutoId",
+                        column: x => x.ProdutoId,
                         principalTable: "Produtos",
                         principalColumn: "ProdutoId",
                         onDelete: ReferentialAction.Cascade);
@@ -312,12 +330,6 @@ namespace Projeto_Rumos.Migrations
                         principalTable: "Encomendas",
                         principalColumn: "EncomendaId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Pagamentos_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -395,10 +407,9 @@ namespace Projeto_Rumos.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CarrinhoCompras_IdProduto",
+                name: "IX_CarrinhoCompras_ProdutoId",
                 table: "CarrinhoCompras",
-                column: "IdProduto",
-                unique: true);
+                column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EncomendaProduto_ProdutoId",
@@ -426,11 +437,6 @@ namespace Projeto_Rumos.Migrations
                 column: "EncomendaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pagamentos_UsuarioId",
-                table: "Pagamentos",
-                column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Produtos_IdCategoria",
                 table: "Produtos",
                 column: "IdCategoria");
@@ -455,6 +461,9 @@ namespace Projeto_Rumos.Migrations
 
             migrationBuilder.DropTable(
                 name: "EncomendaProduto");
+
+            migrationBuilder.DropTable(
+                name: "Funcionarios");
 
             migrationBuilder.DropTable(
                 name: "Pagamentos");

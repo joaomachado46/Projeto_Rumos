@@ -186,11 +186,13 @@ footer hr {
     margin-top: 19px;
     margin-left: 29px;
 }
+
 #redes_sociais_footer {
     float: right;
-    margin-right: 18px;
+    margin-right: 22px;
     position: relative;
-    
+    margin-top: -36px;
+    display: block;
 }
 
 #img-footer {
@@ -212,9 +214,7 @@ footer hr {
 }
 
 .Login_Register_Page {
-    width: 100vw;
     background: rgba(222, 227, 201, 1.8);
-    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center
@@ -253,3 +253,105 @@ footer hr {
     display: flex;
     right: 10%;
 }
+
+.menu_gestao {
+    padding-inline: 80px;
+    width: 100%;
+    display: inline-block;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+    .menu_gestao img {
+        transition: all .5s;
+        border: 10px solid transparent;
+        width: 100%;
+    }
+        .menu_gestao img:hover {
+            border: 10px solid #136497;
+            border-radius: 50%;
+            width: 100%;
+        }
+
+#img_contacto {
+    position: absolute;
+    display: block;
+    width: 100%;
+    width: 101%;
+    height: 75%;
+}
+
+.toggler {
+    width: 500px;
+    height: 200px;
+    position: fixed;
+    z-index: 10;
+    margin-top: -35%;
+    margin-inline: 40%;
+}
+
+#button {
+    padding: .5em 1em;
+    text-decoration: none;
+}
+
+#effect {
+    width: 390px;
+    height: 268px;
+    padding: 0.4em;
+    position: relative;
+    background-image: url(/img/Imagens_site/icon-1415760_640.png);
+    background-size: cover;
+    color: white;
+    border: none;
+    text-shadow: 1px 4px 7px #000000;
+    border-radius: 20px;
+}
+
+    #effect h6 {
+        text-align: center;
+        color: white;
+        font-size: xx-large;
+        margin-top: 173px;
+    }
+
+    #effect h4 {
+        text-align: center;
+        background: none;
+        border: none;
+        font-size: x-large;
+        color: white;
+    }
+
+/*.box-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10%;
+}*/
+
+.box {
+    padding: 30px;
+    margin: 2%;
+    background: white;
+    width: 30%;
+    border: 1px solid #d6d6d6;
+    box-shadow: 0 2px 3px 0px rgba(0,0,0,0.25);
+    border-radius: 3px;
+    transition: .2s all;
+}
+
+.box-wrap:hover .box {
+    filter: blur(3px);
+    opacity: .5;
+    transform: scale(.98);
+    box-shadow: none;
+}
+
+    .box-wrap:hover .box:hover {
+        transform: scale(1);
+        filter: blur(0px);
+        opacity: 1;
+        box-shadow: 0 8px 20px 0px rgba(0,0,0,0.125);
+    }

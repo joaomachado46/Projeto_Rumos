@@ -17,13 +17,13 @@
                         <label class="card-text">@Model.Preco € KG</label>
                         <label style="color: black; font-size: 16px;">@Model.Descricao</label>
                         <br />
-                        <button type="submit" class="btn btn-primary fa fa-shopping-cart"> Adicionar</button>
+                        <button type="button" class="btn btn-primary fa fa-shopping-cart" onclick="encomendar(@Model.ProdutoId)"> Adicionar</button>
                     </form>
                 </div>
             </div>
         </div>
         <div>
-            <a asp-action="Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
+            <a asp-controller="Home" asp-action="Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
         </div>
     </div>
 </div>

@@ -49,28 +49,20 @@ namespace Projeto_Rumos.Controllers
                     }
                     else
                     {
-                        var insucesso = new { Sucesso = false };
-                        return Json(insucesso);
-                        //ErrorViewModel errorViewModel = new ErrorViewModel();
-                        //errorViewModel.RequestId = "Produto ja adicionado ao carrinho";
-
-                        //return View("_Error", errorViewModel);
+                        var sucesso = new { Sucesso = false };
+                        return Json(sucesso);
                     }
                 }
                 catch
                 {
-                    ErrorViewModel errorViewModel = new ErrorViewModel();
-                    errorViewModel.RequestId = "Produto ja adicionado ao carrinho";
-
-                    return View("_Error", errorViewModel);
+                    var necLogin = new { necLogin = "necessarioLogin" };
+                    return Json(necLogin);
                 }
             }
             else
             {
-                ErrorViewModel errorViewModel = new ErrorViewModel();
-                errorViewModel.RequestId = "Login Necessario";
-
-                return View("_Error", errorViewModel);
+                var necLogin = new { necLogin = true };
+                return Json(necLogin);
             }
         }
 
@@ -149,11 +141,11 @@ namespace Projeto_Rumos.Controllers
                 else
                 {
                     ErrorViewModel errorViewModel = new ErrorViewModel();
-                    errorViewModel.RequestId = "Necessario Login";
+                    errorViewModel.RequestId = "Necessário Login";
 
                     return View("_Error", errorViewModel);
                 }
-               
+
             }
             catch (Exception msg)
             {
