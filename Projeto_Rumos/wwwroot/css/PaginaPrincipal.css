@@ -280,14 +280,18 @@ section .btn {
             width: 100%;
         }
 
-.toggler {
-    width: 500px;
-    height: 200px;
+#centrar-popup {
+    width: 100%;
+    display: flex;
     position: fixed;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     z-index: 10;
+    top: 100px;
 }
 
-#caixa {
+#caixa-popup {
     display: none;
 }
 
@@ -307,6 +311,7 @@ section .btn {
     border: none;
     text-shadow: 1px 4px 7px #000000;
     border-radius: 20px;
+    z-index: 10;
 }
 
     #effect h6 {
@@ -323,6 +328,7 @@ section .btn {
         font-size: x-large;
         color: white;
     }
+
 
 .box-wrap {
     align-items: center;

@@ -81,7 +81,7 @@ function runEffect(obj) {
     }
 
     //coloca um estilo a div #caixa(_PopupPartialView.cshtml)
-    document.getElementById("caixa").style.display = "flex";
+    document.getElementById("caixa-popup").style.display = "flex";
     // Run the effect
     $("#effect").show(selectedEffect, options, 500, callback);
 };
@@ -90,8 +90,8 @@ function runEffect(obj) {
 function callback() {
     setTimeout(function () {
         //retira o estilo a div #caixa(_PopupPartialView.cshtml)
-        document.getElementById("caixa").style.display = "none";
         $("#effect:visible").removeAttr("style").fadeOut();
+        document.getElementById("caixa-popup").style.display = "none";
     }, 2000);
 };
 
