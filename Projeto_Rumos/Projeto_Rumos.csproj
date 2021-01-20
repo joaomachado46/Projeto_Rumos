@@ -6,11 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Models-Class\Models-Class.csproj" />
+    <Compile Remove="Services\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Models-Class\Models-Class.csproj" />
   </ItemGroup>
 
   <ItemGroup>

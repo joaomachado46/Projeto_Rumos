@@ -15,6 +15,10 @@
         width: 100%;
         position: absolute;
     }
+    
+    #tamanhoCartaoProduto {
+        width: 36%;
+    }
 
     .footer-black p {
         display: block;

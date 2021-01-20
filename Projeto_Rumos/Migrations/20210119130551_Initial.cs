@@ -66,17 +66,18 @@ namespace Projeto_Rumos.Migrations
                 name: "Funcionarios",
                 columns: table => new
                 {
-                    IdFuncionario = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FuncaoEmpregado = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    NumeroDeTrabalhador = table.Column<int>(type: "int", nullable: false)
+                    NumeroDeTrabalhador = table.Column<int>(type: "int", nullable: false),
+                    Cargo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Funcionarios", x => x.IdFuncionario);
+                    table.PrimaryKey("PK_Funcionarios", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,15 +86,13 @@ namespace Projeto_Rumos.Migrations
                 {
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SobreNome = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Morada = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Morada = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CartaoIdentificacao = table.Column<int>(type: "int", nullable: false),
-                    Contacto = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Contacto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -212,12 +211,13 @@ namespace Projeto_Rumos.Migrations
                 {
                     ProdutoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Preco = table.Column<float>(type: "real", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhotoFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageMimeType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Stock = table.Column<int>(type: "int", nullable: false),
+                    CarrinhoId = table.Column<int>(type: "int", nullable: false),
                     IdCategoria = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -238,7 +238,8 @@ namespace Projeto_Rumos.Migrations
                     CarrinhoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProdutoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsuarioId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,6 +250,12 @@ namespace Projeto_Rumos.Migrations
                         principalTable: "Produtos",
                         principalColumn: "ProdutoId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CarrinhoCompras_Usuarios_UsuarioId1",
+                        column: x => x.UsuarioId1,
+                        principalTable: "Usuarios",
+                        principalColumn: "UsuarioId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,7 +264,6 @@ namespace Projeto_Rumos.Migrations
                 {
                     EncomendaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdUsuario = table.Column<int>(type: "int", nullable: true),
                     IdCarrinhoCompra = table.Column<int>(type: "int", nullable: true),
                     Estado = table.Column<int>(type: "int", nullable: false)
@@ -311,7 +317,6 @@ namespace Projeto_Rumos.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CarrinhoId = table.Column<int>(type: "int", nullable: false),
-                    CarrihoCompraCarrinhoId = table.Column<int>(type: "int", nullable: true),
                     EncomendaId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -319,52 +324,48 @@ namespace Projeto_Rumos.Migrations
                 {
                     table.PrimaryKey("PK_Pagamentos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pagamentos_CarrinhoCompras_CarrihoCompraCarrinhoId",
-                        column: x => x.CarrihoCompraCarrinhoId,
+                        name: "FK_Pagamentos_CarrinhoCompras_CarrinhoId",
+                        column: x => x.CarrinhoId,
                         principalTable: "CarrinhoCompras",
                         principalColumn: "CarrinhoId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pagamentos_Encomendas_EncomendaId",
                         column: x => x.EncomendaId,
                         principalTable: "Encomendas",
                         principalColumn: "EncomendaId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pagamentos_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "UsuarioId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Categorias",
                 columns: new[] { "CategoriaId", "Nome" },
-                values: new object[,]
-                {
-                    { 1, "Frutas" },
-                    { 2, "Legumes" }
-                });
+                values: new object[] { 1, "Frutas" });
 
             migrationBuilder.InsertData(
-                table: "Usuarios",
-                columns: new[] { "UsuarioId", "CartaoIdentificacao", "Contacto", "DataNascimento", "Email", "Morada", "Nome", "Password", "SobreNome", "Username" },
-                values: new object[,]
-                {
-                    { 1, 123123123, 919335544, new DateTime(1991, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "joaogoncalves@gmail.com", "Rua A, Nr. 1", "Joao", "password1", "Goncalves", "jgoncalves1" },
-                    { 2, 231231231, 914586522, new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "joaomachado@gmail.com", "Rua B, Nr. 2", "Joao", "password2", "Machado", "jmachado2" },
-                    { 3, 456456456, 914588541, new DateTime(1991, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "paulosantos@gmail.com", "Rua C, Nr. 3", "Paulo", "password3", "Santos", "psantos3" },
-                    { 4, 789789789, 915663244, new DateTime(1991, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "pedromartins@gmail.com", "Rua D, Nr. 4", "Pedro", "password4", "Martins", "pmartins4" }
-                });
+                table: "Categorias",
+                columns: new[] { "CategoriaId", "Nome" },
+                values: new object[] { 2, "Legumes" });
 
             migrationBuilder.InsertData(
                 table: "Produtos",
-                columns: new[] { "ProdutoId", "Descricao", "IdCategoria", "ImageMimeType", "Nome", "PhotoFileName", "Preco", "Stock" },
+                columns: new[] { "ProdutoId", "CarrinhoId", "Descricao", "IdCategoria", "ImageMimeType", "Nome", "PhotoFileName", "Preco", "Stock" },
                 values: new object[,]
                 {
-                    { 1, "Banana importada da Colombia.", 1, "image/jpeg", "Banana", "banana1.jpg", 0.99f, 10 },
-                    { 2, "Clementina natural de Portugal", 1, "image/jpeg", "Clementina", "clementina.jpg", 0.79f, 100 },
-                    { 3, "Maça fuji, importada", 1, "image/jpeg", "Maça Fuji", "fuji.jpg", 0.59f, 150 },
-                    { 4, "Kiwi, directamente da nossa quinta", 1, "image/jpeg", "Kiwi", "kiwi.jpg", 3.99f, 300 },
-                    { 5, "O melhor limão de Portugal", 1, "image/jpeg", "Limão", "limao-siciliano.jpg", 0.99f, 150 },
-                    { 6, "O melhor melão. Importado do Brasil", 1, "image/jpeg", "Melão", "melao.jpg", 1.99f, 200 },
-                    { 7, "Pera natural, diretamente da nossa quinta", 1, "image/jpeg", "Peras", "peras.jpg", 0.99f, 200 },
-                    { 8, "Uva do Alentejo", 1, "image/jpeg", "Uva", "uvas.jpg", 1.29f, 300 }
+                    { 1, 0, "Banana importada da Colombia.", 1, "image/jpeg", "Banana", "banana1.jpg", 0.99f, 10 },
+                    { 2, 0, "Clementina natural de Portugal", 1, "image/jpeg", "Clementina", "clementina.jpg", 0.79f, 100 },
+                    { 3, 0, "Maça fuji, importada", 1, "image/jpeg", "Maça Fuji", "fuji.jpg", 0.59f, 150 },
+                    { 4, 0, "Kiwi, directamente da nossa quinta", 1, "image/jpeg", "Kiwi", "kiwi.jpg", 3.99f, 300 },
+                    { 5, 0, "O melhor limão de Portugal", 1, "image/jpeg", "Limão", "limao-siciliano.jpg", 0.99f, 150 },
+                    { 6, 0, "O melhor melão. Importado do Brasil", 1, "image/jpeg", "Melão", "melao.jpg", 1.99f, 200 },
+                    { 7, 0, "Pera natural, diretamente da nossa quinta", 1, "image/jpeg", "Peras", "peras.jpg", 0.99f, 200 },
+                    { 8, 0, "Uva do Alentejo", 1, "image/jpeg", "Uva", "uvas.jpg", 1.29f, 300 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -412,6 +413,11 @@ namespace Projeto_Rumos.Migrations
                 column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarrinhoCompras_UsuarioId1",
+                table: "CarrinhoCompras",
+                column: "UsuarioId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EncomendaProduto_ProdutoId",
                 table: "EncomendaProduto",
                 column: "ProdutoId");
@@ -427,14 +433,19 @@ namespace Projeto_Rumos.Migrations
                 column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pagamentos_CarrihoCompraCarrinhoId",
+                name: "IX_Pagamentos_CarrinhoId",
                 table: "Pagamentos",
-                column: "CarrihoCompraCarrinhoId");
+                column: "CarrinhoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pagamentos_EncomendaId",
                 table: "Pagamentos",
                 column: "EncomendaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pagamentos_UsuarioId",
+                table: "Pagamentos",
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Produtos_IdCategoria",
@@ -481,10 +492,10 @@ namespace Projeto_Rumos.Migrations
                 name: "CarrinhoCompras");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Produtos");
 
             migrationBuilder.DropTable(
-                name: "Produtos");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Categorias");

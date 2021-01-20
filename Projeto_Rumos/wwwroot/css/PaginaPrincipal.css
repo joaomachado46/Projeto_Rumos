@@ -1,11 +1,56 @@
-﻿body {
+﻿header img.displayed {
+    margin-top: -81px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}
+
+header nav ul li a:hover {
+    background-color: black;
+}
+
+header hr {
+    margin-top: -101px;
+    margin-bottom: 2px;
+    border: black 4px solid;
+    width: 100%;
+    position: absolute;
+}
+
+body {
     width: 100%;
     overflow-x: hidden;
 }
 
+    body .container {
+        width: 100%
+    }
+
+
 #bk-contactos {
     background-image: url(/img/Imagens_site/strawberries-1330459_1920.jpg);
     background-repeat: no-repeat;
+}
+
+#img_contacto {
+    position: absolute;
+    display: block;
+    width: 100%;
+    width: 101%;
+    height: 95%;
+}
+
+#Info-Contacto {
+    text-align: center;
+    margin-top: 1%;
+    text-shadow: 1px 4px 7px #000000;
+    color: white;
+    display: flow-root;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    flex: 0 0 0
 }
 
 .row p {
@@ -17,17 +62,6 @@
     margin-inline: 82px;
 }
 
-.dados_contato {
-}
-
-header img.displayed {
-    margin-top: -81px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
-}
-
 
 .area-login p {
     text-align: center;
@@ -36,32 +70,33 @@ header img.displayed {
     text-shadow: none;
 }
 
+.Login_Register_Page {
+    background: rgba(222, 227, 201, 1.8);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+
+    .Login_Register_Page a {
+        font-size: x-large;
+        color: ghostwhite;
+    }
+
+    .Login_Register_Page form {
+        width: 100%;
+        text-align: center;
+    }
+
+    .Login_Register_Page input, button {
+        text-align: center;
+    }
+
+    .Login_Register_Page hr {
+        border-top: 3px solid #000;
+    }
+
 #btn-bars {
     display: none;
-}
-
-header hr {
-    margin-top: -101px;
-    margin-bottom: 2px;
-    border: black 4px solid;
-    width: 100%;
-    position: absolute;
-}
-
-#icons-menu {
-    position: absolute;
-    right: 0;
-    margin-top: 0px;
-    z-index: 3;
-}
-
-#btn-search {
-    float: right;
-    background: none;
-    border: none;
-    font-size: 25px;
-    margin-top: 170px;
-    margin-inline: 11px;
 }
 
 #btn-users {
@@ -73,13 +108,34 @@ header hr {
     margin-inline: 11px;
 }
 
-body .container {
-    width: 100%
+#btn-search {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 25px;
+    margin-top: 170px;
+    margin-inline: 11px;
 }
 
-.nav-link {
-    margin-inline: 44px;
+#btn-central {
+    width: 200px;
+    height: 48px;
+    font-family: monospace;
+    font-size: 25px;
+    margin-inline: 43px;
+    background: orange;
+    color: white;
+    border-color: white;
+    border-radius: 20px;
+    border-style: solid;
     text-shadow: 1px 4px 7px #000000;
+}
+
+#icons-menu {
+    position: absolute;
+    right: 0;
+    margin-top: 0px;
+    z-index: 3;
 }
 
 .menu-item a {
@@ -88,6 +144,24 @@ body .container {
     font-style: italic;
     margin-right: 20px;
 }
+
+#Img-Produto {
+    position: relative;
+    margin-top: -19%;
+    width: 100%;
+    display: block;
+}
+
+.nav-link {
+    margin-inline: 44px;
+    text-shadow: 1px 4px 7px #000000;
+}
+
+nav ul li:hover {
+    background-color: black;
+}
+
+
 
 #frutas-central {
     width: 138%;
@@ -111,19 +185,7 @@ section .btn {
     margin-right: auto;
 }
 
-#btn-central {
-    width: 200px;
-    height: 48px;
-    font-family: monospace;
-    font-size: 25px;
-    margin-inline: 43px;
-    background: orange;
-    color: white;
-    border-color: white;
-    border-radius: 20px;
-    border-style: solid;
-    text-shadow: 1px 4px 7px #000000;
-}
+
 
 .texto-pricipal {
     position: absolute;
@@ -155,37 +217,6 @@ section .btn {
     margin-right: -9px;
 }
 
-#footer-contact {
-    margin-top: 41%;
-}
-
-.top-footer {
-    padding-top: 39px;
-}
-
-.footer-black {
-    background-color: black;
-    height: 289px;
-    /*margin-top: 409px;*/
-    position: absolute;
-    width: 101%;
-}
-
-footer hr {
-    margin-top: -11px;
-    margin-bottom: 2px;
-    border-bottom: grey 3px solid;
-    width: 100%;
-    position: absolute;
-}
-
-.footer-black p {
-    color: white;
-    font-size: 19px;
-    position: relative;
-    margin-top: 19px;
-    margin-left: 29px;
-}
 
 #redes_sociais_footer {
     float: right;
@@ -206,37 +237,11 @@ footer hr {
 .row li, h4 {
     margin-bottom: 5px;
 }
-/*Pordutos*/
 
 .card img:hover {
     opacity: 0.5;
     transition: 1s;
 }
-
-.Login_Register_Page {
-    background: rgba(222, 227, 201, 1.8);
-    flex-direction: row;
-    justify-content: center;
-    align-items: center
-}
-
-    .Login_Register_Page a {
-        font-size: x-large;
-        color: ghostwhite;
-    }
-
-    .Login_Register_Page form {
-        width: 100%;
-        text-align: center;
-    }
-
-    .Login_Register_Page input, button {
-        text-align: center;
-    }
-
-    .Login_Register_Page hr {
-        border-top: 3px solid #000;
-    }
 
 #primeiro_t {
     color: white;
@@ -268,27 +273,22 @@ footer hr {
         border: 10px solid transparent;
         width: 100%;
     }
+
         .menu_gestao img:hover {
             border: 10px solid #136497;
             border-radius: 50%;
             width: 100%;
         }
 
-#img_contacto {
-    position: absolute;
-    display: block;
-    width: 100%;
-    width: 101%;
-    height: 75%;
-}
-
 .toggler {
     width: 500px;
     height: 200px;
     position: fixed;
     z-index: 10;
-    margin-top: -35%;
-    margin-inline: 40%;
+}
+
+#caixa {
+    display: none;
 }
 
 #button {
@@ -324,34 +324,69 @@ footer hr {
         color: white;
     }
 
-/*.box-wrap {
-    display: flex;
+.box-wrap {
     align-items: center;
     justify-content: center;
-    margin: 10%;
-}*/
+    text-align: center;
+}
+
+#tamanhoCartaoProduto {
+    width: 27%;
+}
 
 .box {
-    padding: 30px;
-    margin: 2%;
     background: white;
+    margin: 10px;
     width: 30%;
-    border: 1px solid #d6d6d6;
-    box-shadow: 0 2px 3px 0px rgba(0,0,0,0.25);
-    border-radius: 3px;
+    border: none;
     transition: .2s all;
+    box-shadow: 3px 9px 5px 5px rgba(0,0,0,0.125);
 }
 
 .box-wrap:hover .box {
-    filter: blur(3px);
-    opacity: .5;
-    transform: scale(.98);
+    /*filter: blur(3px)*/;
+    /*opacity: .5;*/
+    /*transform: scale(.98);*/
     box-shadow: none;
+    box-shadow: 3px 9px 5px 5px rgba(0,0,0,0.125);
 }
 
     .box-wrap:hover .box:hover {
-        transform: scale(1);
+        transform: scale(1.2);
         filter: blur(0px);
         opacity: 1;
-        box-shadow: 0 8px 20px 0px rgba(0,0,0,0.125);
+        box-shadow: 3px 9px 5px 5px rgba(0,0,0,0.125);
+        z-index: 9;
     }
+
+#footer-contact {
+    margin-top: 41%;
+}
+
+.top-footer {
+    padding-top: 39px;
+}
+
+.footer-black {
+    background-color: black;
+    height: 289px;
+    position: absolute;
+    width: 101%;
+    bottom: auto;
+}
+
+footer hr {
+    margin-top: -11px;
+    margin-bottom: 2px;
+    border-bottom: grey 3px solid;
+    width: 100%;
+    position: absolute;
+}
+
+.footer-black p {
+    color: white;
+    font-size: 19px;
+    position: relative;
+    margin-top: 19px;
+    margin-left: 29px;
+}

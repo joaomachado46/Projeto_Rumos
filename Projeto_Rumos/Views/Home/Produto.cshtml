@@ -1,32 +1,19 @@
 ﻿@model IEnumerable<Models.Produto>
-
-
 @{
     ViewData["Title"] = "Produtos";
 }
-
 <div class="" style="text-align: center;">
     <p class="into" style="POSITION: absolute; z-index: 1; margin-left: 15%; font-size: 227%;">OS SEUS</p>
     <p class="into" style="POSITION: relative; margin-top: 14%; z-index: 1; margin-left: 32%; font-size: 227%;">PRODUTOS</p>
-    <img src="~/img/Imagens_site/apple-recortada.png" alt="Alternate Text" style="
-                POSITION: RELATIVE;
-                MARGIN-TOP: -19%;
-                WIDTH: 100%;
-                display: block;" />
-</div>
-<div class="toggler">
-    <div id="effect" class="ui-widget-content ui-corner-all">
-        <h4 id="ProdutoAdd" class="ui-widget-header ui-corner-all">Produto adicionado no</h4>
-        <h6>
-            Obrigado
-        </h6>
-    </div>
+    <img id="Img-Produto" src="~/img/Imagens_site/apple-recortada.png" alt="Alternate Text"/>
 </div>
 <br />
 <div class="box-wrap">
+    @*Vai criar uma box para cada produto contido na Base de dados*@
+    @*casa box vai ter um botão associado ao id do produto que ao clicar chama a função encomendar no ficheiro LOGIN.JS*@
     @foreach (var item in Model)
     {
-        <div class="col-xl-4 box" style="width:26%;">
+        <div id="tamanhoCartaoProduto" class="col-xl-4 box">
             <div class="card" style="border: none;text-align: center">
                 <img class="card-img-top" src="@Url.Action("GetImage", "Home", new { ProdutoId = item.ProdutoId })" alt="Card image cap" style="width: 70%;align-self: center;">
                 <div class="card-body">

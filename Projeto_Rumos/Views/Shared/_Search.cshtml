@@ -1,12 +1,14 @@
 ﻿@inject WebApplication2.Data.ApplicationDbContext lista
 
-<form asp-controller="Produtos" asp-action="Procurar" method="post" id="search" style="        display: none;
+@*VISTA PARA A LUPA/PROCURA COM PRE-PREENCHIMENTO DOS PRODUTOS EXISTENTES*@
+<form asp-controller="Home" asp-action="Procurar" method="post" id="search" style="        display: none;
         position: absolute;
         right: 48px;
         margin-top: 169px;">
     <input type="text" name="consulta" list="listaProdutos" style="height: 30px; width: 217px" />
     <button type="submit" class="fa fa-search" style="position: absolute; right: 0; height: 27px; border: none; background: none;"></button>
     <datalist id="listaProdutos">
+        @*AQUI É FORNECIDO PARA O INPUT OS PRODUTOS DISPONIVEIS PARA PESQUISA*@
         @foreach (var item in lista.Produtos.ToList())
         {
             <option value="@item.Nome"></option>

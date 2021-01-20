@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models_Class;
+using Models_Class.Enum;
 using Projeto_Rumos.Areas.Identity.Pages.Account;
 using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
 using System;
@@ -23,6 +24,8 @@ namespace WebApplication2.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pagamento> Pagamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
+       
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -120,19 +123,22 @@ namespace WebApplication2.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<EncomendaProduto>().HasKey(ep => new { ep.EncomendaId, ep.ProdutoId });
 
-            //SEEDING DE USUARIOS
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario { UsuarioId = 1, Nome = "Joao", SobreNome = "Goncalves", CartaoIdentificacao = 123123123, Contacto = 919335544, DataNascimento = new DateTime(1991, 01, 01), Email = "joaogoncalves@gmail.com", Morada = "Rua A, Nr. 1", Username = "jgoncalves1", Password = "password1" },
-                new Usuario { UsuarioId = 2, Nome = "Joao", SobreNome = "Machado", CartaoIdentificacao = 231231231, Contacto = 914586522, DataNascimento = new DateTime(1990, 01, 01), Email = "joaomachado@gmail.com", Morada = "Rua B, Nr. 2", Username = "jmachado2", Password = "password2" },
-                new Usuario { UsuarioId = 3, Nome = "Paulo", SobreNome = "Santos", CartaoIdentificacao = 456456456, Contacto = 914588541, DataNascimento = new DateTime(1991, 04, 08), Email = "paulosantos@gmail.com", Morada = "Rua C, Nr. 3", Username = "psantos3", Password = "password3" },
-                new Usuario { UsuarioId = 4, Nome = "Pedro", SobreNome = "Martins", CartaoIdentificacao = 789789789, Contacto = 915663244, DataNascimento = new DateTime(1991, 05, 23), Email = "pedromartins@gmail.com", Morada = "Rua D, Nr. 4", Username = "pmartins4", Password = "password4" });
-
           
             //SEEDING DE CATEGORIAS
             modelBuilder.Entity<Categoria>().HasData(
                 new Categoria { CategoriaId = 1, Nome = "Frutas" },
                 new Categoria { CategoriaId = 2, Nome = "Legumes" });
-        }
 
+            //SEEDING DE FUNCIONARIO PARA TESTES
+            modelBuilder.Entity<Funcionario>().HasData(new Funcionario
+            {
+                Id = 1,
+                Nome = "Admin",
+                Email = "admin@gmail.com",
+                Password = "12345",
+                NumeroDeTrabalhador = 156,
+                Cargo = EnumCargo.Administrador,
+            });
+        }
     }
 }

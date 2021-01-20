@@ -15,10 +15,11 @@
 </head>
 <body>
     <header>
+        @*VISTA PARCIAL DE LOGIN MOSTRA OS DADOS DE USUARIO QUANDO FAZ LOGIN*@
         @await Html.PartialAsync("_LoginPartial.cshtml")
-
         <div class="container">
             <section id="icons-menu" class="pull-right">
+                @*VISTA PARTIAL DE BARRA DE PROCURA*@
                 @await Html.PartialAsync("_Search.cshtml")
                 <form action="/CarrinhoCompras/Carrinho" method="post">
                     <button id="btn-search" type="button" class="fa fa-search" onclick="MudarestadoShow('search')"></button>
@@ -46,39 +47,38 @@
                             <span class="icon-bar"></span>
                         </button>
                     </div>
-                    <div class="collapse navbar-collapse">
+                    <nav class="collapse navbar-collapse">
                         <ul class="nav navbar-nav" style="display: inline-block; margin-left: 15px;">
                             <li class="menu-item">
                                 <a href="/Home/Index" class="">Home</a>
                             </li>
-                            <li class=" menu-item">
+                            <li class="menu-item">
                                 <a href="/Home/Produto" class="">Produtos</a>
                             </li>
-                            <li class=" menu-item">
+                            <li class="menu-item">
                                 <a href="/Home/Contacto" class="">Contacto</a>
                             </li>
-                            <li class=" menu-item">
+                            <li class="menu-item">
                                 <a href="/CarrinhoCompras/Carrinho" class="">Carrinho</a>
                             </li>
-                            <li class=" menu-item">
+                            <li class="menu-item">
                                 <a href="/Home/Sobre" class="">Sobre</a>
                             </li>
                         </ul>
-                    </div><!--/.nav-collapse -->
+                    </nav><!--/.nav-collapse -->
                 </div>
             </div>
         </section>
     </header>
-
+    @*VISTA PARTIAL DO POPUP PARA ESCOLHE LOGIN/REGISTO OU AREA DE FUNCIONARIO*@
     @await Html.PartialAsync("_LoginPartialView.cshtml")
-
-
     <div class="">
         <main role="main" class="pb-3">
+            @*VISTA PARTIAL DO POPUP DE PRODUTO ADICIONADO AO CARRINHO*@
+            @await Html.PartialAsync("_PopupPartialView.cshtml")
             @RenderBody()
         </main>
     </div>
-
     <footer class="footer-black">
         <div>
             <div class="top-footer">
@@ -90,17 +90,11 @@
                                     <h4 class="title_border">INFORMAÇÕES</h4>
                                 </div>
                                 <ul class="list-unstyled mb-0">
-
                                     <li><a href="" title="Politica de Litigios">Politica</a></li>
-
                                     <li><a href="" title="Privacidade">Privacidade</a></li>
-
                                     <li><a href="" title="Politica Cookies">Politica Cookies</a></li>
-
                                     <li><a href="https://www.livroreclamacoes.pt/inicio" title="Livro de Reclamaçoes">Livro de Reclamaçoes</a></li>
-
                                     <li><a href="/Home/Contacto" title="Contactos">Contactos</a></li>
-
                                 </ul>
                             </div>
                         </div>
@@ -110,15 +104,10 @@
                                     <h4 class="title_border">CONTACTOS</h4>
                                 </div>
                                 <ul class="list-unstyled mb-0">
-
                                     <li><a href="#" title="TLM: 000000000">TLM: 00000000</a></li>
-
                                     <li><a href="#" title="Loja Porto ">Loja Porto </a></li>
-
                                     <li><a href="#" title="Loja Lisboa">Loja Lisboa</a></li>
-
                                     <li><a href="/Home/Contacto" title="Email: geral@grupo1.com">Email: geral@grupo1.com</a></li>
-
                                 </ul>
                             </div>
                         </div>
@@ -128,9 +117,7 @@
                                     <h4 class="title_border">COVID19</h4>
                                 </div>
                                 <ul class="list-unstyled mb-0">
-
-                                    <li><a href="/pages/entregas" title="De acordo com as regras exigidas pela DGS as entregas são feitas por um profissional que estará protegido e que a desinfeta as mãos antes e após cada entrega.">De acordo com as regras exigidas pela DGS as entregas são feitas por um profissional que estará protegido e que a desinfeta as mãos antes e após cada entrega.</a></li>
-
+                                    <li><a href="" title="De acordo com as regras exigidas pela DGS as entregas são feitas por um profissional que estará protegido e que a desinfeta as mãos antes e após cada entrega.">De acordo com as regras exigidas pela DGS as entregas são feitas por um profissional que estará protegido e que a desinfeta as mãos antes e após cada entrega.</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -150,11 +137,8 @@
             <p>Website De Grupo1 Rumos. Todos os Direitos Reservados...</p>
             <div id="redes_sociais_footer">
                 <img src="~/img/Imagens_site/facebook_footer.png" alt="Alternate Text" />
-
                 <img src="~/img/Imagens_site/instagram_footer.png" alt="Alternate Text" />
-
                 <img src="~/img/Imagens_site/youtube_footer.png" alt="Alternate Text" />
-
                 <img src="~/img/Imagens_site/vine_footer.png" alt="Alternate Text" />
             </div>
         </div>

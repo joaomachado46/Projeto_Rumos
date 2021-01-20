@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,19 +11,26 @@ namespace Models
     {
         [Key]
         public int ProdutoId { get; set; }
+        [Required]
         [DisplayName("Produto")]
         public string Nome { get; set; }
+        [Required]
         [DisplayName("Preço")]
         public float Preco { get; set; }
+        [Required]
         [DataType(DataType.MultilineText)]
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
+        [Required]
         [DisplayName("Picture")]
         public string PhotoFileName { get; set; }
         public string ImageMimeType { get; set; }
+        [Required]
+        [DisplayName("Stock")]
         public int Stock { get; set; }
 
-
+        [ForeignKey("CarrinhoCompra")]
+        public int CarrinhoId { get; set; }
         public CarrinhoCompra Carrinho { get; set; }
 
         [ForeignKey("Categoria")]

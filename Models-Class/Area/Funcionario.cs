@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Models_Class.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Models
@@ -26,12 +28,10 @@ namespace Models
         public string Password { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 2)]
-        [Display(Name = "Função Empregrado")]
-        public string FuncaoEmpregado { get; set; }
-
-        [Required]
         [Display(Name = "Número Empregado")]
         public int NumeroDeTrabalhador { get; set; }
+
+        [Required]
+        public EnumCargo Cargo { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using WebApplication2.Data;
 namespace Projeto_Rumos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210115171727_Initial")]
+    [Migration("20210119130551_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,10 +169,15 @@ namespace Projeto_Rumos.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("UsuarioId1")
+                        .HasColumnType("int");
+
                     b.HasKey("CarrinhoId");
 
                     b.HasIndex("ProdutoId")
                         .IsUnique();
+
+                    b.HasIndex("UsuarioId1");
 
                     b.ToTable("CarrinhoCompras");
                 });
@@ -220,9 +225,6 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int?>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("EncomendaId");
 
                     b.HasIndex("IdCarrinhoCompra");
@@ -252,10 +254,13 @@ namespace Projeto_Rumos.Migrations
 
             modelBuilder.Entity("Models.Funcionario", b =>
                 {
-                    b.Property<int>("IdFuncionario")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<int>("Cargo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -279,7 +284,7 @@ namespace Projeto_Rumos.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("IdFuncionario");
+                    b.HasKey("Id");
 
                     b.ToTable("Funcionarios");
                 });
@@ -291,7 +296,11 @@ namespace Projeto_Rumos.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int>("CarrinhoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Descricao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("IdCategoria")
@@ -301,9 +310,11 @@ namespace Projeto_Rumos.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoFileName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Preco")
@@ -322,6 +333,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 1,
+                            CarrinhoId = 0,
                             Descricao = "Banana importada da Colombia.",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -333,6 +345,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 2,
+                            CarrinhoId = 0,
                             Descricao = "Clementina natural de Portugal",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -344,6 +357,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 3,
+                            CarrinhoId = 0,
                             Descricao = "Maça fuji, importada",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -355,6 +369,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 4,
+                            CarrinhoId = 0,
                             Descricao = "Kiwi, directamente da nossa quinta",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -366,6 +381,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 5,
+                            CarrinhoId = 0,
                             Descricao = "O melhor limão de Portugal",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -377,6 +393,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 6,
+                            CarrinhoId = 0,
                             Descricao = "O melhor melão. Importado do Brasil",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -388,6 +405,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 7,
+                            CarrinhoId = 0,
                             Descricao = "Pera natural, diretamente da nossa quinta",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -399,6 +417,7 @@ namespace Projeto_Rumos.Migrations
                         new
                         {
                             ProdutoId = 8,
+                            CarrinhoId = 0,
                             Descricao = "Uva do Alentejo",
                             IdCategoria = 1,
                             ImageMimeType = "image/jpeg",
@@ -419,87 +438,34 @@ namespace Projeto_Rumos.Migrations
                     b.Property<int>("CartaoIdentificacao")
                         .HasColumnType("int");
 
-                    b.Property<int>("Contacto")
-                        .HasColumnType("int");
+                    b.Property<string>("Contacto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Morada")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SobreNome")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Usuarios");
-
-                    b.HasData(
-                        new
-                        {
-                            UsuarioId = 1,
-                            CartaoIdentificacao = 123123123,
-                            Contacto = 919335544,
-                            DataNascimento = new DateTime(1991, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "joaogoncalves@gmail.com",
-                            Morada = "Rua A, Nr. 1",
-                            Nome = "Joao",
-                            Password = "password1",
-                            SobreNome = "Goncalves",
-                            Username = "jgoncalves1"
-                        },
-                        new
-                        {
-                            UsuarioId = 2,
-                            CartaoIdentificacao = 231231231,
-                            Contacto = 914586522,
-                            DataNascimento = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "joaomachado@gmail.com",
-                            Morada = "Rua B, Nr. 2",
-                            Nome = "Joao",
-                            Password = "password2",
-                            SobreNome = "Machado",
-                            Username = "jmachado2"
-                        },
-                        new
-                        {
-                            UsuarioId = 3,
-                            CartaoIdentificacao = 456456456,
-                            Contacto = 914588541,
-                            DataNascimento = new DateTime(1991, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "paulosantos@gmail.com",
-                            Morada = "Rua C, Nr. 3",
-                            Nome = "Paulo",
-                            Password = "password3",
-                            SobreNome = "Santos",
-                            Username = "psantos3"
-                        },
-                        new
-                        {
-                            UsuarioId = 4,
-                            CartaoIdentificacao = 789789789,
-                            Contacto = 915663244,
-                            DataNascimento = new DateTime(1991, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "pedromartins@gmail.com",
-                            Morada = "Rua D, Nr. 4",
-                            Nome = "Pedro",
-                            Password = "password4",
-                            SobreNome = "Martins",
-                            Username = "pmartins4"
-                        });
                 });
 
             modelBuilder.Entity("Models_Class.Pagamento", b =>
@@ -508,9 +474,6 @@ namespace Projeto_Rumos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<int?>("CarrihoCompraCarrinhoId")
-                        .HasColumnType("int");
 
                     b.Property<int>("CarrinhoId")
                         .HasColumnType("int");
@@ -523,9 +486,11 @@ namespace Projeto_Rumos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarrihoCompraCarrinhoId");
+                    b.HasIndex("CarrinhoId");
 
                     b.HasIndex("EncomendaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Pagamentos");
                 });
@@ -663,7 +628,13 @@ namespace Projeto_Rumos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId1");
+
                     b.Navigation("Produto");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Models.Encomenda", b =>
@@ -713,7 +684,9 @@ namespace Projeto_Rumos.Migrations
                 {
                     b.HasOne("Models.CarrinhoCompra", "CarrihoCompra")
                         .WithMany()
-                        .HasForeignKey("CarrihoCompraCarrinhoId");
+                        .HasForeignKey("CarrinhoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Models.Encomenda", "Encomenda")
                         .WithMany()
@@ -721,9 +694,17 @@ namespace Projeto_Rumos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CarrihoCompra");
 
                     b.Navigation("Encomenda");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Models.Categoria", b =>

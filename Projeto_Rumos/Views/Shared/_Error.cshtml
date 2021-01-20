@@ -2,10 +2,8 @@
 @{
     ViewData["Title"] = "Error";
 }
-
 <div class="" style="text-align: center">
     <h1 class="text-danger">Ups!!.</h1>
-
     @if (Model.ShowRequestId)
     {
         <label style="text-align: center">
@@ -13,10 +11,8 @@
         </label>
     }
     <hr />
-    
-        <a href="/Identity/Account/Login" type="button" class="btn btn-secondary">Login</a>
-        <a href="/Home/Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
-    
+    <a href="/Identity/Account/Login" type="button" class="btn btn-secondary">Login</a>
+    <a href="/Home/Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
 </div>
 
 

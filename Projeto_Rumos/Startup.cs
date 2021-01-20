@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication2.Data;
-//using WebApp.Services;
 
 namespace Projeto_Rumos
 {
@@ -44,12 +43,14 @@ namespace Projeto_Rumos
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AuthenticatedUser>();
 
+            //AUTENTICAÇÃO GOOGLE
             services.AddAuthentication()
             .AddGoogle(options =>
                 {
                     options.ClientId = "442308774417-f1a23siosvt9ogpejbvnk6t3f99dfemt.apps.googleusercontent.com";
                     options.ClientSecret = "qNOhgoMq2RcUL1PkA-K73odz";
                 });
+            //AUTENTICAÇÃO FACEBOOK
             services.AddAuthentication().AddFacebook(options =>
             {
                 options.AppId = "714895086064263";

@@ -38,6 +38,7 @@ namespace Projeto_Rumos.Controllers
             catch (Exception msg) { ErrorViewModel errorViewModel = new ErrorViewModel(); errorViewModel.RequestId = msg.Message; return View("_Error", errorViewModel); }
         }
 
+        //RETORNA A VIEW COM OS ARTIGOS DA BASE DE DADOS
         public async Task<IActionResult> Produto()
         {
             try
@@ -50,11 +51,11 @@ namespace Projeto_Rumos.Controllers
                 {
                     RequestId = "Mensagem de erro"
                 };
-
                 return View("_Error", errorViewModel);
             }
-
         }
+
+        //RETORNA A VIEW SOBRE
         public IActionResult Sobre()
         {
             try
@@ -70,6 +71,8 @@ namespace Projeto_Rumos.Controllers
             }
         }
 
+        //ACTION PARA IR BUSCAR A IMAGEM E ASSOCIAR AO PRODUTO
+        //NÃO RETORNA VIEW A NÃO SER QUE DE ERRO
         [Obsolete]
         public IActionResult GetImage(int produtoId)
         {
@@ -104,11 +107,57 @@ namespace Projeto_Rumos.Controllers
             }
         }
 
+        // RETORNA A VIEW CONTACTO
         public IActionResult Contacto()
         {
             try
             {
                 return View();
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
+        }
+
+        // ACTION PARA MOSTRAR O DETALHE DO ARTIGO PROCURA PELA "LUPA"
+        public async Task<IActionResult> SearchDetails(int? id)
+        {
+            try
+            {
+                Produto produto = new Produto();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                produto = await _dbContext.Produtos
+                    .FirstOrDefaultAsync(m => m.ProdutoId == id);
+
+                return View(produto);
+            }
+            catch (Exception msg)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.RequestId = msg.Message;
+
+                return View("_Error", errorViewModel);
+            }
+        }
+
+        // ACTION QUE RECEBE A STRING INTRODUZIDA NA LOPA E EFETUA A PESQUISA PARA ENVIAR PARA A ACTION ANTERIOR
+        [HttpPost]
+        public IActionResult Procurar(string consulta)
+        {
+            try
+            {
+                var resultados = _dbContext.Produtos
+                        .FirstOrDefault(m => m.Nome == consulta);
+
+                return View("SearchDetails", resultados);
             }
             catch (Exception msg)
             {

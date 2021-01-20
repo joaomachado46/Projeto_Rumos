@@ -8,14 +8,24 @@ namespace Models
     {
         [Key]
         public int UsuarioId { get; set; }
-        public string Nome { get; set; }
-        public string SobreNome { get; set; }
+        [Required]
+        [StringLength(10, MinimumLength = 4)]
         public string Username { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 4)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
         public string Password { get; set; }
+        [Required]
         public string Morada { get; set; }
+        [Required]
         public DateTime DataNascimento { get; set; }
         public int CartaoIdentificacao { get; set; }
-        public int Contacto { get; set; }
+        [Required]
+        public string Contacto { get; set; }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         public ICollection<Encomenda> Encomendas{ get; set; }

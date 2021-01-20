@@ -10,12 +10,12 @@ namespace Models
     {
         [Key]
         public int CarrinhoId { get; set; }
+
         [ForeignKey("Produto")]
         public int ProdutoId { get; set; }
         public Produto Produto { get; set; }
 
         public Guid UsuarioId { get; set; }
-
-
+        public Usuario Usuario { get; set; }
     }
 }

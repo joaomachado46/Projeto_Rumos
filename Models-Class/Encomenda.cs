@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models_Class.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,11 +9,8 @@ namespace Models
 {
     public class Encomenda
     {
-        public enum EstadoEncomenda { Finalizada, Pendente, Entregue }
-
         [Key]
         public int EncomendaId { get; set; }
-        public string Nome { get; set; }
 
         [ForeignKey("Usuario")]
         public int? IdUsuario { get; set; }
@@ -24,6 +22,6 @@ namespace Models
         public int? IdCarrinhoCompra { get; set; }
         public CarrinhoCompra CarrinhoCompra { get; set; }
 
-        public EstadoEncomenda Estado { get; set; }
+        public EnumEncomenda Estado { get; set; }
     }
 }

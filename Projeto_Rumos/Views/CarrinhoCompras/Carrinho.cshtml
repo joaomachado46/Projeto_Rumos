@@ -13,8 +13,8 @@
                 <th></th>
             </tr>
         </thead>
-
-        @{float Total = 0.00f;}
+        @*VARIAVEL PARA RECEBER O TOTAL DO CARRINHO*@
+        @{double Total = 0.00;}
         @foreach (var item in Model)
         {
             @if (item.Produto != null)
@@ -41,6 +41,6 @@
 
     </table>
     <a href="" type="button" class="btn btn-success">Finalizar encomenda</a>
-    <a href="/Produtos/Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
+    <a href="/Home/Produto" type="button" class="btn btn-secondary">Voltar aos produtos</a>
 </div>
 

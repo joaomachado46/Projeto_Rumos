@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="CreateFuncionario">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -22,10 +22,10 @@
                 @Html.DisplayNameFor(model => model.Password)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FuncaoEmpregado)
+                @Html.DisplayNameFor(model => model.NumeroDeTrabalhador)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumeroDeTrabalhador)
+                @Html.DisplayNameFor(model => model.Cargo)
             </th>
             <th></th>
         </tr>
@@ -43,10 +43,10 @@
                 @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FuncaoEmpregado)
+                @Html.DisplayFor(modelItem => item.NumeroDeTrabalhador)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumeroDeTrabalhador)
+                @Html.DisplayFor(modelItem => item.Cargo)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
