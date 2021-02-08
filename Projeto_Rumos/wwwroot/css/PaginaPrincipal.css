@@ -1,9 +1,9 @@
 ﻿header img.displayed {
-    margin-top: -81px;
+    margin-top: -30px;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    width: 328px;
 }
 
 header nav ul li a:hover {
@@ -11,7 +11,7 @@ header nav ul li a:hover {
 }
 
 header hr {
-    margin-top: -101px;
+    margin-top: -9px;
     margin-bottom: 2px;
     border: black 4px solid;
     width: 100%;
@@ -21,6 +21,7 @@ header hr {
 body {
     width: 100%;
     overflow-x: hidden;
+    font-family:;
 }
 
     body .container {
@@ -80,6 +81,7 @@ body {
     .Login_Register_Page a {
         font-size: x-large;
         color: ghostwhite;
+        text-decoration: none;
     }
 
     .Login_Register_Page form {
@@ -106,7 +108,13 @@ body {
     font-size: 25px;
     margin-top: 170px;
     margin-inline: 11px;
+    transition: 1s;
 }
+
+    #btn-users:hover {
+        font-size: 35px;
+        transition: 1s;
+    }
 
 #btn-search {
     float: right;
@@ -115,7 +123,13 @@ body {
     font-size: 25px;
     margin-top: 170px;
     margin-inline: 11px;
+    transition: 1s;
 }
+
+    #btn-search:hover {
+        font-size: 35px;
+        transition: 1s;
+    }
 
 #btn-central {
     width: 200px;
@@ -129,14 +143,22 @@ body {
     border-radius: 20px;
     border-style: solid;
     text-shadow: 1px 4px 7px #000000;
+    text-decoration: none;
+    transition: 1s;
 }
 
-#icons-menu {
-    position: absolute;
-    right: 0;
-    margin-top: 0px;
-    z-index: 3;
-}
+    #btn-central:hover {
+        width: 300px;
+        font-size: 30px;
+        transition: 1s;
+    }
+
+    #icons-menu {
+        position: absolute;
+        right: 0;
+        margin-top: -37px;
+        z-index: 3;
+    }
 
 .menu-item a {
     color: black;
@@ -159,6 +181,7 @@ body {
 
 nav ul li:hover {
     background-color: black;
+    border-radius: 10px;
 }
 
 
@@ -271,17 +294,17 @@ section .btn {
     .menu_gestao img {
         transition: all .5s;
         border: 10px solid transparent;
-        width: 100%;
+        width: 70%;
     }
 
         .menu_gestao img:hover {
             border: 10px solid #136497;
             border-radius: 50%;
-            width: 100%;
+            width: 80%;
         }
 
 #centrar-popup {
-    width: 100%;
+    width: 73%;
     display: flex;
     position: fixed;
     align-items: center;
@@ -337,7 +360,7 @@ section .btn {
 }
 
 #tamanhoCartaoProduto {
-    width: 27%;
+    width: 20%;
 }
 
 .box {
@@ -350,9 +373,6 @@ section .btn {
 }
 
 .box-wrap:hover .box {
-    /*filter: blur(3px)*/;
-    /*opacity: .5;*/
-    /*transform: scale(.98);*/
     box-shadow: none;
     box-shadow: 3px 9px 5px 5px rgba(0,0,0,0.125);
 }

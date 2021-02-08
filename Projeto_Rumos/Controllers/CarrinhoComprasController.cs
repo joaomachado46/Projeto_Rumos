@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Models;
+using Models_Class;
 using Projeto_Rumos.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WebApplication2.Data;
 using Microsoft.AspNetCore.Http;
+using Azure.Storage.Blobs;
+using Azure.Core;
+using Microsoft.Azure.Cosmos.Table;
+using Models;
 
 namespace Projeto_Rumos.Controllers
 {
@@ -17,71 +21,67 @@ namespace Projeto_Rumos.Controllers
     {
         private ApplicationDbContext _dbContext;
         private readonly AuthenticatedUser _user;
-        readonly CarrinhoCompra carrinhoCompra = new CarrinhoCompra();
+        private readonly DadosStorage _dados;
 
-        public CarrinhoComprasController(ApplicationDbContext dbContext, AuthenticatedUser user)
+        public CarrinhoComprasController(ApplicationDbContext dbContext, AuthenticatedUser user, DadosStorage dados)
         {
             _dbContext = dbContext;
             _user = user;
+            _dados = dados;
         }
         //ACTION CASO APANHEM ALGUMA EXCEÇÃO ESTÃO A RETORNA A VIEW "_ERROR"
         // ACTION PARA CRIAR UM PRODUTO NO CARRINHO DE COMPRAS E ASSOCIAR UM ID DE LOGIN E UM ID DE CARRINHO
         // AQUI FAZ TAMBÉM A GESTÁO DE STOCK, CASO SEJA ADICIONADO UM PRODUTO AO CARRINHO É RETIRADO SO STOCK DESSE PRODUTO.
         // CASO SEJA REPOSTO, O STOCK TAMBÉM É REPOSTO.
         // RETORNA A MENSAGEM JASON PARA ACTIVAR O POPUP DA VISTA PARTIAL "_PopupPartialView.cshtml"
+
         [HttpPost]
-        public IActionResult Create([FromBody] int id)
+        public IActionResult Create([FromBody] int[] dados)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
+                var id = dados[0];
+                var qta = dados[1];
+
                 var user = _user;
-                try
+                if (user.UserName != null)
                 {
                     var prod = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == id);
-                    var exist = _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).Where(x => x.ProdutoId == prod.ProdutoId && x.UsuarioId == Guid.Parse(user.Id)).Any();
-
+                    
+                    //metodo da class "dadosStorage"
+                    _dados.InserirDados(prod, user, qta);
+                    
                     //ESTE CODIGO É PARA REMOVER UNIDADE DO STOCK
-                    //--------------------------------------------
+                    ////--------------------------------------------
                     var NovoStockProduto = prod.Stock - 1;
                     Produto produtoActualizado = prod;
                     produtoActualizado.Stock = NovoStockProduto;
 
                     _dbContext.Update(produtoActualizado);
                     _dbContext.SaveChanges();
-                    //--------------------------------------------
-
-                    if (exist == false)
-                    {
-                        carrinhoCompra.ProdutoId = prod.ProdutoId;
-                        carrinhoCompra.UsuarioId = Guid.Parse(user.Id);
-
-                        _dbContext.Add(carrinhoCompra);
-                        _dbContext.SaveChanges();
-
-                        var sucesso = new { Sucesso = true, };
-                        return Json(sucesso);
-                    }
-                    else
-                    {
-                        var sucesso = new { Sucesso = false };
-                        return Json(sucesso);
-                    }
+                    ////--------------------------------------------///
+                    var sucesso = new { Sucesso = true, };
+                    return Json(sucesso);
                 }
-                catch
+                else
                 {
-                    var necLogin = new { necLogin = "necessarioLogin" };
+                    var necLogin = new { necLogin = true };
                     return Json(necLogin);
                 }
+                ///ALTERNATIVA PARA GRAVAR NA BASE DE DADOS
+                //carrinhoCompra.Produto = prod;
+                ////carrinhoCompra.UsuarioId = Guid.Parse(user.Id);
+
+                //_dbContext.Add(carrinhoCompra);
+                //_dbContext.SaveChanges();
             }
-            else
+            catch (Exception msg)
             {
-                var necLogin = new { necLogin = true };
+                var necLogin = new { necLogin = msg.Message };
                 return Json(necLogin);
             }
         }
-
         // ACTION PARA CONSULTAR O DETALHE DOS ARTIGOS ADICIONADOS AO CARRINHO DE COMPRAS
-
         public IActionResult Details(int id)
         {
             try
@@ -98,9 +98,7 @@ namespace Projeto_Rumos.Controllers
                 return View("_Error", errorViewModel);
             }
         }
-
         // ACTION PARA CONFIRMAR O DELETE DE UM ARTIGO DO CARRINHO DE COMPRAS
-
         public async Task<IActionResult> Delete(int? id)
         {
             try
@@ -109,20 +107,17 @@ namespace Projeto_Rumos.Controllers
                 {
                     return NotFound();
                 }
-
-                var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(m => m.Produto.ProdutoId == id);
+                var produto = await _dbContext.Produtos.FirstOrDefaultAsync(prod => prod.ProdutoId == id);
                 if (produto == null)
                 {
                     return NotFound();
                 }
-
                 return View(produto);
             }
             catch (Exception msg)
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
@@ -135,20 +130,20 @@ namespace Projeto_Rumos.Controllers
         {
             try
             {
-                var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(p => p.ProdutoId == id);
-                _dbContext.CarrinhoCompras.Remove(produto);
+                var user = _user;
+                var prod = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+                await _dados.ApagarProdutoDaListaAsync(prod, user);
+                //var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(p => p.ProdutoId == id);
+                //_dbContext.CarrinhoCompras.Remove(produto);
 
                 //ESTE CODIGO SERVE PARA REPOR O STOCK
                 //-------------------------------------------------------------------
-
-                var prod = _dbContext.Produtos.FirstOrDefault(p => p.ProdutoId == id);
                 var NovoStockProduto = prod.Stock + 1;
                 Produto produtoActualizado = prod;
                 produtoActualizado.Stock = NovoStockProduto;
 
                 _dbContext.Update(produtoActualizado);
                 _dbContext.SaveChanges();
-
                 //--------------------------------------------------------------------
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Carrinho));
@@ -157,7 +152,6 @@ namespace Projeto_Rumos.Controllers
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
@@ -165,23 +159,31 @@ namespace Projeto_Rumos.Controllers
         // ACTION PARA ABRIR O CARRINHO DE COMPRAS, ESTA VIEW SO ABRE SE TIVER LOGIN FEITO, POIS CADA USUARIO TEM ACESSO SOMENTE
         //AO SEU CARRINHO.
 
-        public async Task<IActionResult> Carrinho()
+        public IActionResult Carrinho()
         {
             try
             {
-                if (User.Identity.IsAuthenticated)
+                var userId = _dbContext.Users.ToList();
+                if (_user.UserName != null)
                 {
-                    var user = _user;
-                    return View(await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).Where(x => x.UsuarioId == Guid.Parse(user.Id)).ToListAsync());
+                    List<ListaDeProdCliente> listaDeProd = _dados.ListaDeCliente(_user);
+
+                    var total = 0.0;
+                    foreach (var prod in listaDeProd)
+                    {
+                        var totalProd = prod.Preco * prod.Quantidade;
+                        total += totalProd;
+                    }
+
+                    ViewBag.total = total.ToString("F2");
+                    return View(listaDeProd);
                 }
                 else
                 {
                     ErrorViewModel errorViewModel = new ErrorViewModel();
-                    errorViewModel.RequestId = "Necessário Login";
-
+                    errorViewModel.RequestId = "Erro, necessário efetuar login para vermos a tua lista de compras. Obrigado";
                     return View("_Error", errorViewModel);
                 }
-
             }
             catch (Exception msg)
             {

@@ -38,6 +38,11 @@ function setTwoNumberDecimal(event) {
 
 //função para enviar o produto para o carrinho e retornar uma mensagem TRUE or FALSE e chamar o pop #caixa(_PopupPartialView.cshtml)
 function encomendar(id) {
+
+    var qta = document.getElementById(`${id}`);
+    var res = parseInt(qta.value);
+
+    var dados = [id, res]
     //Enviar para o servidor:
     fetch("/CarrinhoCompras/Create",
         {
@@ -46,9 +51,10 @@ function encomendar(id) {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify(id)
+
+            body: JSON.stringify(dados)  
         }
-    ) 
+    )
         .then(resposta => resposta.json()) // Esta instrução dá erro se a resposta do server não for json
         .then(dados => apresentar(dados));
 }
@@ -81,7 +87,7 @@ function runEffect(obj) {
     }
 
     //coloca um estilo a div #caixa(_PopupPartialView.cshtml)
-    document.getElementById("caixa-popup").style.display = "flex";
+    document.getElementById("caixa-popup").style.display = "block";
     // Run the effect
     $("#effect").show(selectedEffect, options, 500, callback);
 };
@@ -97,6 +103,5 @@ function callback() {
 
 //serve para deixar a div escondida até ser chamada a função e aplicada o estilo para SHOW
 $("#effect").hide();
-
 
 

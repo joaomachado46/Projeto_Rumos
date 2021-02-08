@@ -3,10 +3,10 @@
     ViewData["Title"] = "Error";
 }
 <div class="" style="text-align: center">
-    <h1 class="text-danger">Ups!!.</h1>
+    <img id="stopimage" src="~/img/Imagens_site/Stop.png" alt="Alternate Text" />
     @if (Model.ShowRequestId)
     {
-        <label style="text-align: center">
+        <label style="text-align: center; font-size: 100%;">
             <code>@Model.RequestId</code>
         </label>
     }

@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_AdminLayout</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <header>
+        <img src="https://ac2020storage.blob.core.windows.net/joaomachado/frut2-semFundo.png" class="displayed" id="fruit-logo" />
+        <div class="row">
+            <nav class="navbar navbar-dark bg-dark">
+                <ul>
+                    <li><a href="#">CRIAR PRODUTO</a></li>
+                    <li><a href="#">GERIS FUNCIONARIOS</a></li>
+                    <li><a href="#">LOJA</a></li>
+                    <li><a href="#">LOGIN ADMIN</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="col-xl-9 container" style="top: 106px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>
+<style>
+    header {
+        position: fixed;
+        width: 100%;
+    }
+
+    nav {
+        width: 100%;
+        height: 92px;
+    }
+
+        nav ul {
+            width: 100%;
+            display: flex;
+            list-style-type: disc;
+            margin-left: 124px;
+        }
+
+            nav ul li {
+                display: block;
+                color: white;
+                padding-inline: 37px;
+                margin: 14px;
+                text-align: center;
+            }
+
+                nav ul li a {
+                    color: white;
+                    position: relative;
+                    text-decoration: none;
+                }
+
+                    nav ul li a:hover {
+                        color: white;
+                        position: relative;
+                        text-decoration: none;
+                    }
+
+                nav ul li:hover {
+                    background-color: forestgreen;
+                    font-size: larger;
+                    transition: 1s;
+                    border-radius: 20px;
+                }
+
+    #img-produto {
+        width: 33%;
+    }
+        #img-produto:hover {
+            width: 40%;
+            transition: 1s;
+            z-index:2;
+        }
+
+    #tabelaDeImg {
+        width: 154px;
+    }
+
+    #fruit-logo {
+        width: 121px;
+        position: absolute;
+        z-index: 1;
+        left: 25px;
+    }
+
+    #linha-produto:hover {
+        width: 20%;
+        transition: 1s;
+    }
+
+</style>

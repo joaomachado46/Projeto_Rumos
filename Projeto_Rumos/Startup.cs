@@ -9,9 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Projeto_Rumos.Areas.Identity.Pages.Account;
+using Models;
 using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
-using Projeto_Rumos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +41,7 @@ namespace Projeto_Rumos
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AuthenticatedUser>();
+            services.AddScoped<DadosStorage>();
 
             //AUTENTICAÇÃO GOOGLE
             services.AddAuthentication()

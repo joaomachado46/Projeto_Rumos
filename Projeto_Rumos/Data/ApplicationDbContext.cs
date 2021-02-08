@@ -12,8 +12,7 @@ namespace WebApplication2.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
         }
 
@@ -24,8 +23,9 @@ namespace WebApplication2.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pagamento> Pagamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
-       
-
+        public DbSet<Contacto> Contactos { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +40,9 @@ namespace WebApplication2.Data
                     PhotoFileName = "banana1.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 10,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/banana1.jpg"
+
                 },
                 new Produto
                 {
@@ -51,7 +53,8 @@ namespace WebApplication2.Data
                     PhotoFileName = "clementina.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 100,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/clementina.jpg"
                 },
                 new Produto
                 {
@@ -62,7 +65,8 @@ namespace WebApplication2.Data
                     PhotoFileName = "fuji.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 150,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/fuji.jpg"
                 },
                 new Produto
                 {
@@ -73,7 +77,8 @@ namespace WebApplication2.Data
                     PhotoFileName = "kiwi.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 300,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/kiwi.jpg"
                 },
                 new Produto
                 {
@@ -84,7 +89,8 @@ namespace WebApplication2.Data
                     PhotoFileName = "limao-siciliano.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 150,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/limao-siciliano.jpg"
                 },
                 new Produto
                 {
@@ -95,7 +101,8 @@ namespace WebApplication2.Data
                     PhotoFileName = "melao.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 200,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/melao.jpg"
                 },
                 new Produto
                 {
@@ -106,7 +113,8 @@ namespace WebApplication2.Data
                     PhotoFileName = "peras.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 200,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/peras.jpg"
                 },
                 new Produto
                 {
@@ -117,13 +125,14 @@ namespace WebApplication2.Data
                     PhotoFileName = "uvas.jpg",
                     ImageMimeType = "image/jpeg",
                     Stock = 300,
-                    IdCategoria = 1
+                    IdCategoria = 1,
+                    Url = "https://ac2020storage.blob.core.windows.net/joaomachado/uvas.jpg"
                 });
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<EncomendaProduto>().HasKey(ep => new { ep.EncomendaId, ep.ProdutoId });
 
-          
+
             //SEEDING DE CATEGORIAS
             modelBuilder.Entity<Categoria>().HasData(
                 new Categoria { CategoriaId = 1, Nome = "Frutas" },
@@ -139,6 +148,17 @@ namespace WebApplication2.Data
                 NumeroDeTrabalhador = 156,
                 Cargo = EnumCargo.Administrador,
             });
+
+            //modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
+            //{
+            //    Email = "admim@gmail.com",
+            //    UserName = "admim",
+            //    SobreNome = "admim",
+            //    StreetAddress = "avenida",
+            //    DateOfBirth = DateTime.Now,
+            //    PhoneNumber = "9185552522",
+            //    PasswordHash = "Joao.12",
+            //});
         }
     }
 }

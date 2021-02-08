@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
+using Models;
+using WebApplication2.Data;
+using Projeto_Rumos.Models;
 
 namespace Projeto_Rumos.Areas.Identity.Pages.Account
 {
@@ -24,17 +27,20 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbContext;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -53,7 +59,7 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
 
             [Required]
             public string UserName { get; set; }
-            public string SobreNome{ get; set; }
+            public string SobreNome { get; set; }
             public string Morada { get; set; }
             public DateTime DataNascimento { get; set; }
             public string PhoneNumber { get; set; }
@@ -82,39 +88,63 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, PhoneNumber = Input.PhoneNumber, SobreNome = Input.SobreNome, StreetAddress = Input.Morada, DateOfBirth = Input.DataNascimento };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                //try
+                //{
+                    //REGISTO DE UM NOVO USUARIO NA CLASS USUARIO, PARA USO NO FINALIZAR DA ENCOMENDA.
+                    Usuario Usuario = new Usuario
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
+                        Username = Input.UserName,
+                        Morada = Input.Morada,
+                        DataNascimento = Input.DataNascimento,
+                        Contacto = Input.PhoneNumber,
+                        Email = Input.Email,
+                    };
+
+                    _dbContext.Usuarios.Add(Usuario);
+                    _dbContext.SaveChanges();
+
+                    //AQUI É TAMBÉM REGISTADO UM USUSARIO MAS PARA A CLASS REGISTER, CRIADA AUTOMATICAMENTE PELO IDENTITY PARA EFEITOS
+                    //DE LOGIN.
+                    var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, PhoneNumber = Input.PhoneNumber, Surname = Input.SobreNome, StreetAddress = Input.Morada, DateOfBirth = Input.DataNascimento };
+                    var result = await _userManager.CreateAsync(user, Input.Password);
+                    if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                //}
+                //catch (Exception msg)
+                //{
+                //    ErrorViewModel errorViewModel = new ErrorViewModel();
+                //    errorViewModel.RequestId = msg.Message;
+
+                //    return RedirectToAction("_Error", errorViewModel);
+                //}
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }

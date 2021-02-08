@@ -1,48 +1,167 @@
-﻿@{
+﻿@model Models_Class.Contacto
+
+@{
     ViewData["Title"] = "Contacto";
 }
+<style>
+    form .form-line {
+        list-style: none;
+    }
+
+        form .form-line input,
+        textarea {
+            width: 80%;
+            border-radius: 20px;
+            box-shadow: 2px 2px 2px black;
+            padding: 7px;
+            color: black;
+        }
+
+    .form-submit-button {
+        width: 150px;
+        height: 25px;
+    }
+
+    textarea:focus {
+        box-shadow: 2px 2px 2px black;
+        border: 0 none;
+        outline: 0;
+    }
+
+    input:focus,
+    select:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
+</style>
 <section>
-    <img id="img_contacto" src="~/img/Imagens_site/strawberries-1330459_192022.jpg" alt="Alternate Text"/>
-    <div style="display: flow-root;position: relative;margin-bottom: 197px;">
+    <img id="img_contacto" src="https://ac2020storage.blob.core.windows.net/joaomachado/strawberries-1330459_192022.jpg" alt="Alternate Text" />
+    <div style="display: flow-root; position: relative; margin-bottom: 197px;">
         <div id="Info-Contacto" class="col-md-6">
             <div class="dados_contato">
                 <h2>Fresh Fruit</h2>
-                <h3>Avenida daquela zona, 000, 0000-000, CidadeX</h3>
+                <h3>Rua Oliveira Monteiro, 168, 4050-438, Porto</h3>
             </div>
             <p></p>
             <div class="dados_contato">
                 <h2>Email</h2>
-                <h3>geral@grupo1.com</h3>
+                <h3>geral@freshfruit.com</h3>
             </div>
             <p></p>
             <div class="dados_contato">
                 <h2>Número telemóvel</h2>
-                <h3>+351 000000000</h3>
+                <h3>+351 911 222 333</h3>
             </div>
         </div>
+
+
+
         <div id="Info-Contacto" class="col-md-6">
-            <form>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Seu nome</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            <form class="jotform-form" action="https://submit.jotformeu.com/submit/210355952828360/" method="post"
+                  name="form_210355952828360" id="210355952828360" accept-charset="utf-8" autocomplete="on" novalidate="true">
+                <input type="hidden" name="formID" value="210355952828360">
+                <input type="hidden" id="JWTContainer" value="">
+                <input type="hidden" id="cardinalOrderNumber" value="">
+                <div role="main" class="form-all">
+                    <ul class="form-section page-section">
+                        <li class="form-line" data-type="control_textbox" id="id_1">
+                            <label class="form-label form-label-top form-label-auto" id="label_1" for="input_1">
+                                Name
+                            </label>
+                            <div id="cid_1" class="form-input-wide">
+                                <input type="text" id="input_1" name="q1_name" placeholder="Nome" data-type="input-textbox"
+                                       class="form-textbox" size="30" value="" data-component="textbox"
+                                       aria-labelledby="label_1">
+                            </div>
+                        </li>
+                        <li class="form-line jf-required" data-type="control_textbox" id="id_8">
+                            <label class="form-label form-label-top form-label-auto" id="label_8" for="input_8">
+                                Email
+                                <span class="form-required">
+                                    *
+                                </span>
+                            </label>
+                            <div id="cid_8" class="form-input-wide jf-required">
+                                <input type="text" id="input_8" name="q8_email" data-type="input-textbox"
+                                       placeholder="email@exemplo.com" class="form-textbox validate[required, Email]" size="20"
+                                       value="" data-component="textbox" aria-labelledby="label_8" required="">
+                            </div>
+                        </li>
+                        <li class="form-line" data-type="control_textbox" id="id_5">
+                            <label class="form-label form-label-top form-label-auto" id="label_5" for="input_5">
+                                Phone
+                            </label>
+                            <div id="cid_5" class="form-input-wide">
+                                <input type="text" id="input_5" name="q5_phone" data-type="input-textbox"
+                                       placeholder="911 222 333" class="form-textbox" size="30" value=""
+                                       data-component="textbox" aria-labelledby="label_5">
+                            </div>
+                        </li>
+                        <li class="form-line" data-type="control_textarea" id="id_9">
+                            <label class="form-label form-label-top form-label-auto" id="label_9" for="input_9">
+                                Message
+                            </label>
+                            <div id="cid_9" class="form-input-wide">
+                                <textarea id="input_9" class="form-textarea" name="q9_message" cols="40"
+                                          placeholder="Digite aqui a mensagem" rows="6" data-component="textarea"
+                                          aria-labelledby="label_9"></textarea>
+                            </div>
+                        </li>
+                        <li class="form-line" data-type="control_button" id="id_2">
+                            <div id="cid_2" class="form-input-wide">
+                                <div style="text-align:left" data-align="left"
+                                     class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
+                                    <button id="input_2" type="submit" class="btn btn-primary" value="Enviar"
+                                            data-component="button" data-content="">
+                                        Enviar
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display:none">
+                            Should be Empty:
+                            <input type="text" name="website" value="">
+                        </li>
+                    </ul>
                 </div>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Email</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Número telemóvel</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Mensagem</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
+                <script>
+                    JotForm.showJotFormPowered = "new_footer";
+                </script>
+                <script>
+                    JotForm.poweredByText = "Powered by JotForm";
+                </script>
+                <input type="hidden" class="simple_spc" id="simple_spc" name="simple_spc"
+                       value="210355952828360-210355952828360">
+                <script type="text/javascript">
+                    var all_spc = document.querySelectorAll("form[id='210355952828360'] .si" + "mple" + "_spc");
+                    for (var i = 0; i < all_spc.length; i++) {
+                        all_spc[i].value = "210355952828360-210355952828360";
+                    }
+                </script>
+                <input type="hidden" name="event_id" value="1612554974437_210355952828360_G8NDxUE">
             </form>
         </div>
     </div>
 </section>
 
 
+@section Scripts{
+    <script type="text/javascript">
+        document.getElementById("formNome").focus();
 
+        var nomeF = document.getElementById("formNome");
+        var emailF = document.getElementById("formEmail");
+        var mensagemF = document.getElementById("formMensagem");
+        var submitF = document.getElementById("submitFormBtn");
 
+        submitF.addEventListener("click", function test() {
+            if (!nomeF === "" && !emailF === "" && !mensagemF === "") {
+                alert("Obrigado pelo seu contacto!")
+            }
+            else {
+                alert("Dados incompletos!")
+            }
+        });
+    </script>
+}

@@ -12,8 +12,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Frutaria</title>
     <title>@ViewData["Title"] - Projeto_Rumos</title>
+    <link rel="shortcut icon" type="image/ico" href="~/img/Imagens_site/frut2-semFundo.png">
 </head>
-<body>
+<body style="
+    font-family: 'FontAwesome';
+">
     <header>
         @*VISTA PARCIAL DE LOGIN MOSTRA OS DADOS DE USUARIO QUANDO FAZ LOGIN*@
         @await Html.PartialAsync("_LoginPartial.cshtml")
@@ -27,7 +30,7 @@
                     <button id="btn-search" type="submit" class="fa fa-shopping-cart"></button>
                 </form>
             </section>
-            <img src="~/img/Imagens_site/frut2-semFundo.png" class="displayed" id="fruit-logo" />
+            <img src="https://ac2020storage.blob.core.windows.net/joaomachado/frut2-semFundo.png" class="displayed" id="fruit-logo" />
         </div>
         <hr>
         <section>
@@ -35,7 +38,7 @@
                  style="position: relative;
                         background: none;
                         border-bottom: none;
-                        margin-top: -92px;
+                        margin-top: 1px;
                         float: left;
                         z-index: 1;">
                 <div class="container">
@@ -124,7 +127,6 @@
                         <div class="col-lg-3 col-md-12">
                             <div class="info_footer end">
                                 <div class="title_footer">
-                                    <img href="/Home/Index" id="img-footer" src="~/img/Imagens_site/frut2-semFundo.png" />
                                 </div>
                             </div>
                         </div>

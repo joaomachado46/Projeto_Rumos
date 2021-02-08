@@ -13,6 +13,7 @@ using Projeto_Rumos.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Azure.Storage.Blobs;
 
 namespace Projeto_Rumos.Controllers
 {
@@ -20,11 +21,14 @@ namespace Projeto_Rumos.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _WebHost;
+        private readonly DadosStorage _dados;
+       
 
-        public ProdutosController(ApplicationDbContext context, IWebHostEnvironment webHost)
+        public ProdutosController(ApplicationDbContext context, IWebHostEnvironment webHost, DadosStorage dados)
         {
             _context = context;
             _WebHost = webHost;
+            _dados = dados;
         }
 
         // GET: Produtos
@@ -32,27 +36,48 @@ namespace Projeto_Rumos.Controllers
         // RETORNA PARA A VIEW UMA VIEWBAG.MESSAGE COM NOME DO FICHEIRO PARA SER PREENCHIDA A MENSAGEM DE SUCESSO E PREENCHER O CAMPO "PHOTOFILENAME", CASO SE ESQUEÇAM QUE TEM QUE SER O NOME DO ARQUIVO DE IMAGEM
 
         [HttpPost]
-        public async Task<IActionResult> SalvarImg(IFormFile ifile)
+        public IActionResult SalvarImg(List<IFormFile> files)
         {
             try
             {
-                string imgext = Path.GetExtension(ifile.FileName);
-                if (imgext == ".jpg" || imgext == ".gif" || imgext == ".png" || imgext == ".jpeg")
+                BlobContainerClient blop = _dados.OperacaoDeLigaçãoExistente();
+
+                string url = null;
+               
+                foreach (IFormFile ifile in files)
                 {
-                    var saveimg = Path.Combine(_WebHost.WebRootPath, "img/images_produtos", ifile.FileName);
-                    var stream = new FileStream(saveimg, FileMode.Create);
-                    await ifile.CopyToAsync(stream);
-                    string nomeProduto = ifile.FileName;
-                    ViewBag.Message = nomeProduto;
-                    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
-                    return View("CreateProduto");
+                    var localFileName = Path.GetFileName(ifile.FileName);
+                    MemoryStream ms = new MemoryStream();
+                    ifile.CopyTo(ms);
+
+                    BlobClient blobClient = blop.GetBlobClient(localFileName);
+                    ms.Position = 0;
+                    blobClient.Upload(ms, true);
+                    url = blobClient.Uri.OriginalString;
                 }
-                else
-                {
-                    ViewBag.Message = "Erro!! Carregue uma imagem válida";
-                    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
-                    return View("CreateProduto");
-                }
+                ViewBag.Url = url;
+                ViewBag.Message = "Imagem(s) Carregada(s):";
+                ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                return View("CreateProduto");
+
+
+                //string imgext = Path.GetExtension(ifile.FileName);
+                //if (imgext == ".jpg" || imgext == ".gif" || imgext == ".png" || imgext == ".jpeg")
+                //{
+                //    var saveimg = Path.Combine(_WebHost.WebRootPath, "img/images_produtos", ifile.FileName);
+                //    var stream = new FileStream(saveimg, FileMode.Create);
+                //    await ifile.CopyToAsync(stream);
+                //    string nomeProduto = ifile.FileName;
+                //    ViewBag.Message = "Imagem Carregada: " + nomeProduto;
+                //    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                //    return View("CreateProduto");
+                //}
+                //else
+                //{
+                //    ViewBag.Message = "Erro!! Carregue uma imagem válida";
+                //    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                //    return View("CreateProduto");
+                //}
             }
             catch (Exception msg)
             {
@@ -131,7 +156,7 @@ namespace Projeto_Rumos.Controllers
                     return View("CreateProduto");
                 }
 
-                
+
                 return View();
             }
             catch (Exception msg)
@@ -272,6 +297,12 @@ namespace Projeto_Rumos.Controllers
         {
             return View(await _context.Produtos.ToListAsync());
         }
+
+        public async Task<IActionResult> GestaoProduto()
+        {
+            return View(await _context.Produtos.ToListAsync());
+        }
+
 
         //ACTION COM MENU PARA ESCOLHER CRIAR PRODUTO OU IR PARA VIEW "ListaProdutosGestao" PARA EDITAR OU REMOVER PRODUTO
         public IActionResult MenuGestaoProduto()

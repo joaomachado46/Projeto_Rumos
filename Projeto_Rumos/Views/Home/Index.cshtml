@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Models.Produto>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -11,13 +13,13 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
         <div class="item active">
-            <img src="~/img/Imagens_site/christmas-2918569_192022.jpg" alt="Los Angeles" style="width:100%;">
+            <img src="https://ac2020storage.blob.core.windows.net/joaomachado/christmas-2918569_192022.jpg" alt="" style="width:100%;">
         </div>
         <div class="item">
-            <img src="~/img/Imagens_site/blueberries-2278921_192022.jpg" alt="Chicago" style="width:100%;">
+            <img src="https://ac2020storage.blob.core.windows.net/joaomachado/blueberries-2278921_192022.jpg" alt="Chicago" style="width:100%;">
         </div>
         <div class="item">
-            <img src="~/img/Imagens_site/frutas.png" alt="New york" style="width:100%;">
+            <img src="https://ac2020storage.blob.core.windows.net/joaomachado/frutas.png" alt="New york" style="width:100%;">
         </div>
     </div>
 </div>
@@ -31,39 +33,24 @@
 <div class="text-center" style="margin-top:10px">
     <h2>Em destaque esta semana..</h2>
 </div>
-<div class="col-xl-4">
-    <div class="card" style="border: none">
-        <img class="card-img-top" src="~/img/Imagens_site/abacaxi.png" alt="Card image cap">
-        <div class="card-body">
-            <h4 class="card-title">Abacaxi</h4>
-            <p class="card-text">
-                4.99 € KG
-            </p>
-            <a href="Home/Produto" class="btn btn-primary fa fa-shopping-cart"> Adicionar</a>
+<div class="box-wrap">
+    @*Vai criar uma box para cada produto contido na Base de dados*@
+    @*casa box vai ter um botão associado ao id do produto que ao clicar chama a função encomendar no ficheiro LOGIN.JS*@
+    @foreach (var item in Model)
+    {
+        <div id="tamanhoCartaoProduto" class="col-xl-4 box">
+            <div class="card" style="border: none;text-align: center">
+                <img class="card-img-top" src="@item.Url" alt="Card image cap" style="width: 70%;align-self: center;">
+                <div class="card-body">
+                    <form action="" method="post">
+                        <h4 class="card-title">@item.Nome</h4>
+                        <p class="card-text" style="font-size: xx-large; font-style: italic; text-shadow: 1px 4px 7px #000000;">@item.Preco € KG</p>
+                        <p style="color: black;font-size: 16px;text-shadow: 1px 4px 7px #000000">@item.Descricao</p>
+                        <br />
+                        <button type="button" class="btn btn-primary fa fa-shopping-cart" onclick="encomendar(@item.ProdutoId)"> Adicionar</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<div class="col-xl-4">
-    <div class="card" style="border: none">
-        <img class="card-img-top" src="~/img/Imagens_site/banana.png" alt="Card image cap">
-        <div class="card-body">
-            <h4 class="card-title">Banana</h4>
-            <p class="card-text">
-                0.99 € KG
-            </p>
-            <a href="Home/Produto" class="btn btn-primary fa fa-shopping-cart"> Adicionar</a>
-        </div>
-    </div>
-</div>
-<div class="col-xl-4">
-    <div class="card" style="border: none">
-        <img class="card-img-top" src="~/img/Imagens_site/kiwi.png" alt="Card image cap">
-        <div class="card-body">
-            <h4 class="card-title">Kiwi</h4>
-            <p class="card-text">
-                3.99 € KG
-            </p>
-            <a href="Home/Produto" class="btn btn-primary fa fa-shopping-cart"> Adicionar</a>
-        </div>
-    </div>
+    }
 </div>

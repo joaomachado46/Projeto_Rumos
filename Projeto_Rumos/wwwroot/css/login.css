@@ -12,12 +12,13 @@
         left: 46%; /* posiciona na metade da tela */
         margin-left: -179px; /* e retrocede metade da largura */
     }
+        
 
-    section #fruit-logo-login {
-        width: 56%;
-        margin-inline: 83px;
-        margin-top: -6px;
-    }
+        section #fruit-logo-login {
+            width: 56%;
+            margin-inline: 83px;
+            margin-top: -6px;
+        }
 
     section #menu-login-mask {
         position: fixed;
@@ -29,12 +30,12 @@
         z-index:11;
     }
 
-    section #hr-menu-log {
-        margin-top: -48px;
-        margin-bottom: 45px;
-        width: -webkit-fill-available;
-        border-bottom: black 2px solid;
-    }
+section #hr-menu-log {
+    margin-top: 32px;
+    margin-bottom: 45px;
+    width: -webkit-fill-available;
+    border-bottom: black 2px solid;
+}
 
     section .area-login {
         margin-top: -30px;
@@ -58,21 +59,30 @@
             text-align: center;
         }
 
-    section .btn-login {
-        margin-top: 24px;
+section .btn-login {
+    margin-top: 24px;
+}
+section .btn-login a {
+    text-decoration: none;
+}
+    section .btn-login input:hover {
+        text-decoration: none;
+        width: 355px;
+        transition: 1s;
     }
 
-        section .btn-login input {
-            text-align: center;
-            margin: auto;
-            color: white;
-            background-color: black;
-            display: block;
-            margin-bottom: 15px;
-            width: 320px;
-            height: 50px;
-            border-radius: 41px;
-        }
+    section .btn-login input {
+        text-align: center;
+        margin: auto;
+        color: white;
+        background-color: black;
+        display: block;
+        margin-bottom: 15px;
+        width: 320px;
+        height: 50px;
+        border-radius: 41px;
+        transition: 1s;
+    }
 
     section #close-login {
         background: none;

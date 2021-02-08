@@ -57,7 +57,7 @@ namespace Projeto_Rumos.Controllers
                 }
                 else if (Funcionario.Nome == nome && Funcionario.Email == email && Funcionario.Password == password)
                 {
-                    return RedirectToAction(nameof(MenuGestao));
+                    return RedirectToAction("GestaoProduto","Produtos");
                 }
                 else
                 {
