@@ -18,9 +18,7 @@ namespace Models
 
         public ICollection<EncomendaProduto> EncomendaProdutos { get; set; }
 
-        [ForeignKey("CarrinhoCompra")]
-        public int? IdCarrinhoCompra { get; set; }
-        public CarrinhoCompra CarrinhoCompra { get; set; }
+        public IEnumerable<CarrinhoCompra> CarrinhoCompras { get; set; }
 
         public EnumEncomenda Estado { get; set; }
     }

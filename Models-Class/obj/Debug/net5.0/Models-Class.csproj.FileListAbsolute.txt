@@ -1,0 +1,12 @@
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\bin\Debug\net5.0\Models-Class.deps.json
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\bin\Debug\net5.0\Models-Class.dll
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\bin\Debug\net5.0\ref\Models-Class.dll
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\bin\Debug\net5.0\Models-Class.pdb
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.GeneratedMSBuildEditorConfig.editorconfig
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.AssemblyInfoInputs.cache
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.AssemblyInfo.cs
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.csproj.CoreCompileInputs.cache
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.dll
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\ref\Models-Class.dll
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.pdb
+C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.csprojAssemblyReference.cache

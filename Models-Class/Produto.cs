@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Models
 {
-    public class Produto
+    public class Produto 
     {
         [Key]
         public int ProdutoId { get; set; }
@@ -37,6 +37,10 @@ namespace Models
         public int? IdCategoria { get; set; }
         public Categoria Categoria { get; set; }
 
+        [Required]
+        public string Url { get; set; }
+
         public ICollection<EncomendaProduto> EncomendaProdutos { get; set; }
+
     }
 }
