@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models_Class;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,40 +8,51 @@ using System.Text;
 
 namespace Models
 {
-    public class Produto 
-    {
-        [Key]
-        public int ProdutoId { get; set; }
-        [Required]
+    public class Produto : BaseEntity
+    {  
         [DisplayName("Produto")]
         public string Nome { get; set; }
-        [Required]
+        
         [DisplayName("Preço")]
         public float Preco { get; set; }
-        [Required]
+        
         [DataType(DataType.MultilineText)]
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
-        [Required]
+       
         [DisplayName("Picture")]
         public string PhotoFileName { get; set; }
+
         public string ImageMimeType { get; set; }
-        [Required]
+       
         [DisplayName("Stock")]
         public int Stock { get; set; }
 
-        [ForeignKey("CarrinhoCompra")]
-        public int CarrinhoId { get; set; }
-        public CarrinhoCompra Carrinho { get; set; }
-
-        [ForeignKey("Categoria")]
-        public int? IdCategoria { get; set; }
-        public Categoria Categoria { get; set; }
-
-        [Required]
         public string Url { get; set; }
 
-        public ICollection<EncomendaProduto> EncomendaProdutos { get; set; }
+        
+        [ForeignKey("Categoria")]
+        public int? CategoriaId { get; set; }
+        public Categoria Categoria { get; set; }
 
+        //[ForeignKey("CarrinhoCompra")]
+        //public int CarrinhoId { get; set; }
+        //public CarrinhoCompra Carrinho { get; set; }
+
+        //public ICollection<EncomendaProduto> EncomendaProdutos { get; set; }
+
+        public Produto()
+        {
+        }
+        public Produto(string nome, float preco, string descricao, string photoFileName, string imageMimeType, int stock, string url)
+        {
+            Nome = nome;
+            Preco = preco;
+            Descricao = descricao;
+            PhotoFileName = photoFileName;
+            ImageMimeType = imageMimeType;
+            Stock = stock;
+            Url = url;
+        }
     }
 }

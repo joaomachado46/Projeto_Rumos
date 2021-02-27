@@ -1,10 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Azure.Documents;
 using Models_Class;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Models
@@ -15,13 +12,13 @@ namespace Models
         public static string ContainerName { get; set; }
         public static string RowKey { get; set; }
 
-        public readonly AuthenticatedUser _user;
+        public AuthenticatedUser _user;
 
         public DadosStorage(AuthenticatedUser user)
         {
             _user = user;
             StringBlopService = "DefaultEndpointsProtocol=https;AccountName=ac2020storage;AccountKey=5fAS2v1hAZnoxilyas06ZvZwd7ehsftjBQkGlhsnW8+qtGiqboSO3UhsMS4+y59mx+DKJhmulzSx4NG2UF78SQ==;EndpointSuffix=core.windows.net";
-            ContainerName = "listaCarrinhoComprasG1";
+            ContainerName = "joaomachado";
         }
         //CONNECTION PARA A LISTA DE CARRINHO DE COMPRAS
         public static CloudTable Conection()
@@ -36,7 +33,7 @@ namespace Models
         //METODO PARA INSERIR ITENS NA LISTA DE CLIENTE(STORAGE)
         public void InserirDados(Produto produto, AuthenticatedUser user, int qta)
         {
-            ListaDeProdCliente produtoAddCart = new ListaDeProdCliente(user.UserName, produto.ProdutoId.ToString()) { ProdutoId = produto.ProdutoId, Nome = produto.Nome, Quantidade = qta, Preco = produto.Preco, Url = produto.Url };
+            ListaDeProdCliente produtoAddCart = new ListaDeProdCliente(user.UserName, produto.Id.ToString()) { ProdutoId = produto.Id, Nome = produto.Nome, Quantidade = qta, Preco = produto.Preco, Url = produto.Url };
             TableBatchOperation tableOperations = new TableBatchOperation();
             tableOperations.InsertOrMerge(produtoAddCart);
             DadosStorage.Conection().ExecuteBatchAsync(tableOperations);
@@ -44,7 +41,7 @@ namespace Models
         //METODO PARA APAGAR UM ITEM DA TABLE DO CLIENTE SE ELIMINAR NO CARRINHO
         public async Task ApagarProdutoDaListaAsync(Produto produto, AuthenticatedUser user)
         {   
-            TableOperation tableOperation = TableOperation.Retrieve<ListaDeProdCliente>(user.UserName, produto.ProdutoId.ToString());
+            TableOperation tableOperation = TableOperation.Retrieve<ListaDeProdCliente>(user.UserName, produto.Id.ToString());
             TableResult resultado = await Conection().ExecuteAsync(tableOperation);
             ListaDeProdCliente produtoAEliminar = resultado.Result as ListaDeProdCliente;
 

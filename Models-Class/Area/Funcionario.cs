@@ -1,4 +1,5 @@
-﻿using Models_Class.Enum;
+﻿using Models_Class;
+using Models_Class.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,11 +8,8 @@ using System.Text;
 
 namespace Models
 {
-    public class Funcionario
+    public class Funcionario : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [StringLength(10, MinimumLength = 4)]
         public string Nome { get; set; }

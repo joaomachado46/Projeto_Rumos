@@ -1,48 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using WebApplication2.Data;
+using Newtonsoft.Json;
+using Projeto_Rumos.ApiConector;
+using WebApiFrutaria.DataContext;
 
 namespace Projeto_Rumos.Controllers
 {
     [Authorize]
     public class UsuariosController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApiConnector _apiConnector;
 
-        public UsuariosController(ApplicationDbContext context)
+        public UsuariosController(ApiConnector apiConnector)
         {
-            _context = context;
+            _apiConnector = apiConnector;
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            var search = _apiConnector.Get("Usuarios");
+            var result = JsonConvert.DeserializeObject<List<Usuario>>(search);
+            return View(result.ToList());
         }
 
         // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
+            if (id.Equals(null))
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
-            if (usuario == null)
+            var search = _apiConnector.GetById("Usuarios", id);
+            var result = JsonConvert.DeserializeObject<Usuario>(search);
+            if (result == null)
             {
                 return NotFound();
             }
-
-            return View(usuario);
+            return View(result);
         }
 
         // GET: Usuarios/Create
@@ -51,46 +51,40 @@ namespace Projeto_Rumos.Controllers
             return View();
         }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Username,Password,Morada,DataNascimento,CartaoIdentificacao,Contacto,Email")] Usuario usuario)
+        public IActionResult Create([Bind("UsuarioId,Username,Password,Morada,DataNascimento,CartaoIdentificacao,Contacto,Email")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
+                _apiConnector.Post("Usuarios", usuario.ToString());
                 return RedirectToAction(nameof(Index));
             }
             return View(usuario);
         }
 
         // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
+            if (id.Equals(null))
             {
                 return NotFound();
             }
-
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
+            var search = _apiConnector.GetById("Usuarios", id);
+            var result = JsonConvert.DeserializeObject<Usuario>(search);
+            if (result == null)
             {
                 return NotFound();
             }
-            return View(usuario);
+            return View(result);
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Username,Password,Morada,DataNascimento,CartaoIdentificacao,Contacto,Email")] Usuario usuario)
+        public IActionResult Edit(int id, [Bind("UsuarioId,Username,Password,Morada,DataNascimento,CartaoIdentificacao,Contacto,Email")] Usuario usuario)
         {
-            if (id != usuario.UsuarioId)
+            if (id != usuario.Id)
             {
                 return NotFound();
             }
@@ -99,12 +93,11 @@ namespace Projeto_Rumos.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
+                    _apiConnector.Update("Usuarios", usuario.ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.UsuarioId))
+                    if (!UsuarioExists(usuario.Id))
                     {
                         return NotFound();
                     }
@@ -119,37 +112,34 @@ namespace Projeto_Rumos.Controllers
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+            if (id.Equals(null))
             {
                 return NotFound();
             }
-
-            var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
-            if (usuario == null)
+            var search = _apiConnector.GetById("Usuarios", id);
+            var result = JsonConvert.DeserializeObject<Usuario>(search);
+            
+            if (result == null)
             {
                 return NotFound();
             }
-
-            return View(usuario);
+            return View(result);
         }
 
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            _context.Usuarios.Remove(usuario);
-            await _context.SaveChangesAsync();
+            _apiConnector.Delete("Usuarios", id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool UsuarioExists(int id)
         {
-            return _context.Usuarios.Any(e => e.UsuarioId == id);
+            return bool.Parse(_apiConnector.GetById("Usuarios", id));
         }
     }
 }

@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projeto_Rumos", "Projeto_Rumos\Projeto_Rumos.csproj", "{C38D5D88-5BB7-46F7-AA01-23FB46545038}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B86283A0-41AC-4F07-8E58-1ECEEE9B694B} = {B86283A0-41AC-4F07-8E58-1ECEEE9B694B}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models-Class", "Models-Class\Models-Class.csproj", "{FDA05D14-DCA7-4569-8F44-2073F14ED54C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiFrutaria", "WebApiFrutaria\WebApiFrutaria.csproj", "{B86283A0-41AC-4F07-8E58-1ECEEE9B694B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiFrutaria", "WebApiFrutaria\WebApiFrutaria.csproj", "{B86283A0-41AC-4F07-8E58-1ECEEE9B694B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

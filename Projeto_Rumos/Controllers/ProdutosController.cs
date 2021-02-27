@@ -1,127 +1,102 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using WebApplication2.Data;
 using System.Globalization;
-using Microsoft.AspNetCore.Authorization;
 using Projeto_Rumos.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Azure.Storage.Blobs;
+using Projeto_Rumos.ApiConector;
+using Newtonsoft.Json;
+using WebApiFrutaria.DataContext;
 
 namespace Projeto_Rumos.Controllers
 {
     public class ProdutosController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ContextApplication _context;
         private readonly IWebHostEnvironment _WebHost;
         private readonly DadosStorage _dados;
-       
+        private readonly ApiConnector _apiConnector;
 
-        public ProdutosController(ApplicationDbContext context, IWebHostEnvironment webHost, DadosStorage dados)
+        public ProdutosController(ContextApplication context, IWebHostEnvironment webHost, DadosStorage dados, ApiConnector apiConnector)
         {
             _context = context;
             _WebHost = webHost;
             _dados = dados;
+            _apiConnector = apiConnector;
         }
-
         // GET: Produtos
-        // ACTION PARA SALVAR A IMAGEM QUE VAI SER ASSOCIADA AO PRODUTO, ESTA IMAGEM TEM QUE TER O MESMO NOME QUE SE DA A PROP DO PRODUTO "PHOTOFILENAME"
-        // RETORNA PARA A VIEW UMA VIEWBAG.MESSAGE COM NOME DO FICHEIRO PARA SER PREENCHIDA A MENSAGEM DE SUCESSO E PREENCHER O CAMPO "PHOTOFILENAME", CASO SE ESQUEÇAM QUE TEM QUE SER O NOME DO ARQUIVO DE IMAGEM
-
+        // ACTION PARA SALVAR A IMAGEM QUE VAI SER ASSOCIADA AO PRODUTO, É RETURNADO O LINK DO AZURE STORAGE
         [HttpPost]
         public IActionResult SalvarImg(List<IFormFile> files)
         {
             try
             {
-                BlobContainerClient blop = _dados.OperacaoDeLigaçãoExistente();
-
-                string url = null;
-               
-                foreach (IFormFile ifile in files)
+                var result = "";
+                foreach (var file in files)
                 {
-                    var localFileName = Path.GetFileName(ifile.FileName);
-                    MemoryStream ms = new MemoryStream();
-                    ifile.CopyTo(ms);
-
-                    BlobClient blobClient = blop.GetBlobClient(localFileName);
-                    ms.Position = 0;
-                    blobClient.Upload(ms, true);
-                    url = blobClient.Uri.OriginalString;
+                    if (file.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            var fileName = file.FileName;
+                            file.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            string s = Convert.ToBase64String(fileBytes);
+                            // act on the Base64 data
+                            var resultConvert = JsonConvert.SerializeObject(s+fileName);
+                            result = _apiConnector.SaveImageAzureBlob(resultConvert, "Produtos", "saveimage");
+                        }
+                    }
                 }
-                ViewBag.Url = url;
+
+                ViewBag.Url = result;
                 ViewBag.Message = "Imagem(s) Carregada(s):";
-                ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
-                return View("CreateProduto");
-
-
-                //string imgext = Path.GetExtension(ifile.FileName);
-                //if (imgext == ".jpg" || imgext == ".gif" || imgext == ".png" || imgext == ".jpeg")
-                //{
-                //    var saveimg = Path.Combine(_WebHost.WebRootPath, "img/images_produtos", ifile.FileName);
-                //    var stream = new FileStream(saveimg, FileMode.Create);
-                //    await ifile.CopyToAsync(stream);
-                //    string nomeProduto = ifile.FileName;
-                //    ViewBag.Message = "Imagem Carregada: " + nomeProduto;
-                //    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
-                //    return View("CreateProduto");
-                //}
-                //else
-                //{
-                //    ViewBag.Message = "Erro!! Carregue uma imagem válida";
-                //    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
-                //    return View("CreateProduto");
-                //}
+                //ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                return View("CreateProduto");   
             }
             catch (Exception msg)
             {
-
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
 
         // GET: Produtos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
             try
             {
-                Produto produto = new Produto();
-                if (id == null)
+                if (id.Equals(null))
                 {
                     return NotFound();
                 }
 
-                produto = await _context.Produtos
-                    .FirstOrDefaultAsync(m => m.ProdutoId == id);
+                var search = _apiConnector.GetById("Produtos", id);
+                var result = JsonConvert.DeserializeObject<Produto>(search);
 
-                return View(produto);
+                return View(result);
             }
             catch (Exception msg)
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
 
         // GET: Produtos/Create
         // retorna para a view um viewdata com as categorias, para ser preenchido um select com os nomes das categorias
-
         public IActionResult CreateProduto()
         {
             try
             {
-                ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+                //ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
                 return View();
             }
             catch (Exception msg)
@@ -137,59 +112,57 @@ namespace Projeto_Rumos.Controllers
         // Metodo para criar um novo produto da área de funcionario, "prop: photoFileName", é introduzida automaticamente no controller
         // pois como é igual para todos os produtos, não é necessario escrever.
         // retorna uma viewbag.message consoante se der correto ou não e passa essa message para a view.
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string nome, string preco, string descricao, string photoFileName, int stock, Categoria categoria)
+        public IActionResult Create(string nome, string preco, string descricao, string photoFileName, int stock, string url)
         {
             try
             {
                 var Preco = float.Parse(preco, CultureInfo.InvariantCulture.NumberFormat);
-                var produto = new Produto { Nome = nome, Preco = Preco, Descricao = descricao, PhotoFileName = photoFileName, ImageMimeType = "image/jpeg", Stock = stock, Categoria = categoria };
+                var produto = new Produto { Nome = nome, Preco = Preco, Descricao = descricao, PhotoFileName = photoFileName, ImageMimeType = "image/jpeg", Stock = stock, Url=url};
 
-                if (ModelState.IsValid)
+                var data = JsonConvert.SerializeObject(produto);
+                var result = _apiConnector.Post("Produtos", data);
+                if (result == null)
                 {
-                    _context.Add(produto);
-                    await _context.SaveChangesAsync();
-
+                    return null;
+                }
+                else
+                {
                     ViewBag.Message2 = "Produto adicionado com sucesso";
                     return View("CreateProduto");
                 }
-
-
-                return View();
             }
             catch (Exception msg)
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
 
         // GET: Produtos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
             try
             {
-                if (id == null)
+                if (id.Equals(null))
                 {
                     return NotFound();
                 }
-
-                var produto = await _context.Produtos.FindAsync(id);
-                if (produto == null)
+                var search = _apiConnector.GetById("Produtos", id);
+                var result = JsonConvert.DeserializeObject<Produto>(search);
+                
+                if (result == null)
                 {
                     return NotFound();
                 }
-                return View(produto);
+                return View(result);
             }
             catch (Exception msg)
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
@@ -199,14 +172,14 @@ namespace Projeto_Rumos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string Preco, [Bind("ProdutoId,Nome,Descricao,PhotoFileName,ImageMimeType,Stock")] Produto produto)
+        public IActionResult Edit(int id, string Preco, [Bind("Id,Nome,Descricao,PhotoFileName,ImageMimeType,Stock")] Produto produto)
         {
             try
             {
                 var preco = float.Parse(Preco, CultureInfo.InvariantCulture.NumberFormat);
                 produto.Preco = preco;
 
-                if (id != produto.ProdutoId)
+                if (id != produto.Id)
                 {
                     return NotFound();
                 }
@@ -215,12 +188,11 @@ namespace Projeto_Rumos.Controllers
                 {
                     try
                     {
-                        _context.Update(produto);
-                        await _context.SaveChangesAsync();
+                        _apiConnector.Update("Produtos", produto.ToString());
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!ProdutoExists(produto.ProdutoId))
+                        if (!ProdutoExists(produto.Id))
                         {
                             return NotFound();
                         }
@@ -237,35 +209,32 @@ namespace Projeto_Rumos.Controllers
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
 
         // GET: Produtos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             try
             {
-                if (id == null)
+                if (id.Equals(null))
                 {
                     return NotFound();
                 }
-
-                var produto = await _context.Produtos
-                    .FirstOrDefaultAsync(m => m.ProdutoId == id);
-                if (produto == null)
+                var search = _apiConnector.GetById("Produtos", id);
+                var result = JsonConvert.DeserializeObject<Produto>(search);
+                
+                if (result == null)
                 {
                     return NotFound();
                 }
-
-                return View(produto);
+                return View(result);
             }
             catch (Exception msg)
             {
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
@@ -273,13 +242,11 @@ namespace Projeto_Rumos.Controllers
         // POST: Produtos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             try
             {
-                var produto = await _context.Produtos.FindAsync(id);
-                _context.Produtos.Remove(produto);
-                await _context.SaveChangesAsync();
+                _apiConnector.Delete("Produtos", id);
                 return RedirectToAction(nameof(ListaProdutosGestao));
             }
             catch (Exception msg)
@@ -292,17 +259,19 @@ namespace Projeto_Rumos.Controllers
         }
 
         //ACTION PARA MOSTAR A LISTA DE PRODUTOS A SER GERIDA
-
-        public async Task<IActionResult> ListaProdutosGestao()
+        public IActionResult ListaProdutosGestao()
         {
-            return View(await _context.Produtos.ToListAsync());
+            var search = _apiConnector.Get("Produtos");
+            var result = JsonConvert.DeserializeObject<List<Produto>>(search);
+            return View(result.ToList());
         }
 
-        public async Task<IActionResult> GestaoProduto()
+        public IActionResult GestaoProduto()
         {
-            return View(await _context.Produtos.ToListAsync());
+            var search = _apiConnector.Get("Produtos");
+            var result = JsonConvert.DeserializeObject<List<Produto>>(search);
+            return View(result.ToList());
         }
-
 
         //ACTION COM MENU PARA ESCOLHER CRIAR PRODUTO OU IR PARA VIEW "ListaProdutosGestao" PARA EDITAR OU REMOVER PRODUTO
         public IActionResult MenuGestaoProduto()
@@ -312,7 +281,7 @@ namespace Projeto_Rumos.Controllers
 
         private bool ProdutoExists(int id)
         {
-            return _context.Produtos.Any(e => e.ProdutoId == id);
+            return bool.Parse(_apiConnector.GetById("Produto",id));
         }
     }
 }

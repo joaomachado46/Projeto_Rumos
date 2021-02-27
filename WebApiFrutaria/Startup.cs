@@ -1,16 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WebApiFrutaria.Business;
+using WebApiFrutaria.Business.Implementation;
+using WebApiFrutaria.DataContext;
+using WebApiFrutaria.Repository.GenericRepository;
 
 namespace WebApiFrutaria
 {
@@ -27,10 +29,54 @@ namespace WebApiFrutaria
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //CONECÇÃO A BASE DE DADOS
+            services.AddDbContext<ContextApplication>(options => options.UseSqlServer(Configuration.GetConnectionString("ApiConnectionString")));
+           
+  
+            //PARA ACEITAR VARIOS FORMATOS(necessario instalar o nuget: Microsoft.AspNetCore.Mvc.Formatters.Xml)
+            services.AddMvc(option =>
+            {
+                option.RespectBrowserAcceptHeader = true;
+                option.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+                option.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+            })
+                .AddXmlSerializerFormatters();
+
             services.AddControllers();
+
+            //ÍNJEÇÃO DA DEPENDENDIA DE VERSIONAMENTO DA API
+            services.AddApiVersioning();
+
+            //ÍNJEÇÃO DA DEPENDENDIA DE ACESSO A AZURE STORAGE
+            services.AddTransient<DadosStorage>();
+            services.AddTransient<AuthenticatedUser>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+            services.AddMemoryCache();
+
+            //INJEÇÃO DO REPOSITORIO GENERICO DE ACESSO A BD
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            //INJEÇÃO DA CAMADA BUSINESS DAS CLASS
+            services.AddScoped<IProductBusiness, ProductBusinessImplementation>();
+            services.AddScoped<IFuncionarioBusiness, FuncionarioBusinessImplementation>();
+            services.AddScoped<IUsuarioBusiness, UsuarioBusinessImplementation>();
+            services.AddScoped<ICarrinhoComprasBusiness, CarrinhoComprasBusinessImplementation>();
+            //SWAGGER
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiFrutaria", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "FrutariaApi",
+                    Version = "v1",
+                    Description = "Api developed in course",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "João Machado",
+                        Url = new Uri("https://github.com/joaomachado46"),
+                    }
+                });
             });
         }
 

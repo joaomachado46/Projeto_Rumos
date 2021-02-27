@@ -15,8 +15,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
 using Models;
-using WebApplication2.Data;
-using Projeto_Rumos.Models;
+using Projeto_Rumos.ApiConector;
+using WebApiFrutaria.DataContext;
 
 namespace Projeto_Rumos.Areas.Identity.Pages.Account
 {
@@ -27,20 +27,23 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ContextApplication _dbContext;
+        private readonly ApiConnector _apiConnector;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ApplicationDbContext dbContext)
+            ContextApplication dbContext,
+            ApiConnector apiConnector)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _dbContext = dbContext;
+            _apiConnector = apiConnector;
         }
 
         [BindProperty]
@@ -100,7 +103,7 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
                         Email = Input.Email,
                     };
 
-                    _dbContext.Usuarios.Add(Usuario);
+                    _apiConnector.Post("usuario", Usuario.ToString());
                     _dbContext.SaveChanges();
 
                     //AQUI É TAMBÉM REGISTADO UM USUSARIO MAS PARA A CLASS REGISTER, CRIADA AUTOMATICAMENTE PELO IDENTITY PARA EFEITOS

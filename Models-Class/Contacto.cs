@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Models_Class
 {
-    public class Contacto
+    public class Contacto : BaseEntity
     {
-        [Key]
-        public int ContactoId { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 3)]

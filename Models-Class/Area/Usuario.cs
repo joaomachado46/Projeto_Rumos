@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Models_Class;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-    public class Usuario
+    public class Usuario : BaseEntity
     {
-        [Key]
-        public int UsuarioId { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]

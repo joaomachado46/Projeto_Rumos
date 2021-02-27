@@ -12,7 +12,7 @@
             <div class="card" style="border: none">
                 <img class="card-img-top" src="@Model.Url" alt="Card image cap">
                 <div class="card-body">
-                    <form action="/CarrinhoCompras/Create/@Model.ProdutoId" method="post">
+                    <form action="/CarrinhoCompras/Create/@Model.Id" method="post">
                         <label class="card-title">@Model.Nome</label>
                         <label class="card-text">@Model.Preco € KG</label>
                         <label style="color: black; font-size: 16px;">@Model.Descricao</label>

@@ -1,0 +1,68 @@
+﻿///BLOCO DE CODIGO COMO ALTERNATIVA PARA GRAVAR IMAGENS NO PROJETO
+            ///-------------------------------------------------------------------------------
+            //string imgext = Path.GetExtension(ifile.FileName);
+            //if (imgext == ".jpg" || imgext == ".gif" || imgext == ".png" || imgext == ".jpeg")
+            //{
+            //    var saveimg = Path.Combine(_WebHost.WebRootPath, "img/images_produtos", ifile.FileName);
+            //    var stream = new FileStream(saveimg, FileMode.Create);
+            //    await ifile.CopyToAsync(stream);
+            //    string nomeProduto = ifile.FileName;
+            //    ViewBag.Message = "Imagem Carregada: " + nomeProduto;
+            //    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+            //    return View("CreateProduto");
+            //}
+            //else
+            //{
+            //    ViewBag.Message = "Erro!! Carregue uma imagem válida";
+            //    ViewData["IdCategoria"] = new SelectList(_context.Categorias, "Nome", "Nome");
+            //    return View("CreateProduto");
+            //}------------------------------------------------------------------------------------------
+
+//ACTION PARA IR BUSCAR A IMAGEM E ASSOCIAR AO PRODUTO
+        //NÃO RETORNA VIEW A NÃO SER QUE DE ERRO
+        //[Obsolete]
+        //public IActionResult GetImage(int Id)
+        //{
+        //    try
+        //    {
+        //        Produto requestedPhoto = _dbContext.Produtos.FirstOrDefault(p => p.Id == Id);
+        //        if (requestedPhoto != null)
+        //        {
+        //            string webRootpath = _environment.WebRootPath;
+        //            string folderPath = "\\img\\images_produtos\\";
+        //            string fullPath = webRootpath + folderPath + requestedPhoto.PhotoFileName;
+
+        //            FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+        //            byte[] fileBytes;
+        //            using (BinaryReader br = new BinaryReader(fileOnDisk))
+        //            {
+        //                fileBytes = br.ReadBytes((int)fileOnDisk.Length);
+        //            }
+        //            return File(fileBytes, requestedPhoto.ImageMimeType);
+        //        }
+        //        else
+        //        {
+        //            return NotFound();
+        //        }
+        //    }
+        //    catch (Exception msg)
+        //    {
+        //        ErrorViewModel errorViewModel = new ErrorViewModel();
+        //        errorViewModel.RequestId = msg.Message;
+
+        //        return View("_Error", errorViewModel);
+        //    }
+        //}
+        -----------------------------------------------------------------------------------------
+
+///ALTERNATIVA PARA GRAVAR NA BASE DE DADOS
+                //carrinhoCompra.Produto = prod;
+                ////carrinhoCompra.UsuarioId = Guid.Parse(user.Id);
+
+                //_dbContext.Add(carrinhoCompra);
+                //_dbContext.SaveChanges();
+
+                ------------------------------------------------------------------------------------------
+///ALTERNATIVA AO AZURE STORAGE
+                //var produto = await _dbContext.CarrinhoCompras.Include(carrinho => carrinho.Produto).FirstOrDefaultAsync(p => p.Id == id);
+                //_dbContext.CarrinhoCompras.Remove(produto);

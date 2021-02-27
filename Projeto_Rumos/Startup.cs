@@ -1,21 +1,15 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using Models;
+using Projeto_Rumos.ApiConector;
 using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication2.Data;
+using WebApiFrutaria.DataContext;
 
 namespace Projeto_Rumos
 {
@@ -31,17 +25,21 @@ namespace Projeto_Rumos
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            //DEFINIR A CONNECTION STRING
+            services.AddDbContext<ContextApplication>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("ApiConnectionString")));
 
+            
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ContextApplication>();
 
+            services.AddTransient<DadosStorage>();
+            services.AddTransient<AuthenticatedUser>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<AuthenticatedUser>();
-            services.AddScoped<DadosStorage>();
+
+            services.AddScoped<ApiConnector>();
 
             //AUTENTICAÇÃO GOOGLE
             services.AddAuthentication()
@@ -57,8 +55,16 @@ namespace Projeto_Rumos
                 options.AppSecret = "1ae106909b1d2aa9bdf5f201f16a6602";
                 options.AccessDeniedPath = "/AccessDeniedPathInfo";
             });
-
+            //services.AddApiVersioning();
             services.AddControllersWithViews();
+            //PARA ACEITAR VARIOS FORMATOS(necessario instalar o nuget: Microsoft.AspNetCore.Mvc.Formatters.Xml)
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+            })
+                .AddXmlSerializerFormatters();
             services.AddRazorPages();
         }
 
@@ -84,6 +90,10 @@ namespace Projeto_Rumos
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -9,4 +9,3 @@ C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.c
 C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.dll
 C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\ref\Models-Class.dll
 C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.pdb
-C:\VSEXERCICIOS\Projeto_Rumos_Azure\Models-Class\obj\Debug\net5.0\Models-Class.csprojAssemblyReference.cache

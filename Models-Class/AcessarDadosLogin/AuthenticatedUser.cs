@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -8,7 +7,7 @@ namespace Models
 {
     public class AuthenticatedUser
     {
-		private readonly IHttpContextAccessor _accessor;
+		public readonly IHttpContextAccessor _accessor;
 
 		public AuthenticatedUser(IHttpContextAccessor accessor)
 		{

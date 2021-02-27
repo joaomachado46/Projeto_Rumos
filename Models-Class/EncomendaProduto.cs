@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Models_Class;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Models
 {
-    public class EncomendaProduto
+    public class EncomendaProduto : BaseEntity
     {
-        public int Id { get; set; }
         [ForeignKey("Produto")]
         public int ProdutoId { get; set; }
         public Produto Produto { get; set; }

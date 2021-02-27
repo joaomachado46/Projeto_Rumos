@@ -23,11 +23,11 @@
 
                         <div><div class="spb-label-tooltip">
                             <label for="unidades" class="">Quantidade (KG/UNI)</label></div>
-                        <input type="number" step="any" name="properties[KG]" id="@item.ProdutoId" value="" class="" style="width:38%"></div>
+                        <input type="number" step="any" name="properties[KG]" id="@item.Id" value="" class="" style="width:38%"></div>
 
                         <p style="color: black;font-size: 16px;text-shadow: 1px 4px 7px #000000">@item.Descricao</p>
                         <br />
-                        <button type="button" class="btn btn-primary fa fa-shopping-cart" onclick="encomendar(@item.ProdutoId)"> Adicionar</button>
+                        <button type="button" class="btn btn-primary fa fa-shopping-cart" onclick="encomendar(@item.Id)"> Adicionar</button>
                     </form>
                 </div>
             </div>

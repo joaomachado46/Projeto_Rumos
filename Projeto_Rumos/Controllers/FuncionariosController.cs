@@ -1,31 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Newtonsoft.Json;
+using Projeto_Rumos.ApiConector;
 using Projeto_Rumos.Models;
-using WebApplication2.Data;
+using WebApiFrutaria.DataContext;
 
 namespace Projeto_Rumos.Controllers
 {
     public class FuncionariosController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ContextApplication _context;
+        private readonly ApiConnector _apiConnector;
 
-        public FuncionariosController(ApplicationDbContext context)
+        public FuncionariosController(ContextApplication context, ApiConnector apiConnector)
         {
             _context = context;
+            _apiConnector = apiConnector;
         }
 
         // GET: Funcionarios
         //MOSTRA A LISTA DE USUARIOS NA BASE DE DADOS
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Funcionarios.ToListAsync());
+            var response = _apiConnector.Get("Funcionarios");
+            var result = JsonConvert.DeserializeObject<List<Funcionario>>(response);
+            return View(result.ToList());
         }
 
         //ACTION PARA A VIEW DE LOGIN DE FUNCIONARIO.
@@ -49,13 +55,18 @@ namespace Projeto_Rumos.Controllers
         {
             try
             {
-                var Funcionario = _context.Funcionarios.FirstOrDefault(func => func.Email == email && func.Password == password);
+                var response = _apiConnector.Get("Funcionarios");
+                var result = JsonConvert.DeserializeObject<List<Funcionario>>(response);
+                //METODO DECLARADO A BAIXO
+                var resultPass = ComputeHash(password, new SHA256CryptoServiceProvider());
+
+                var Funcionario = result.FirstOrDefault(func => func.Email == email && func.Password == resultPass);
                 if (Funcionario == null)
                 {
                     ViewBag.message = "Ups !! Dados incorrectos!!!";
                     return View();
                 }
-                else if (Funcionario.Nome == nome && Funcionario.Email == email && Funcionario.Password == password)
+                else if (Funcionario.Nome == nome && Funcionario.Email == email && Funcionario.Password == resultPass)
                 {
                     return RedirectToAction("GestaoProduto","Produtos");
                 }
@@ -66,30 +77,35 @@ namespace Projeto_Rumos.Controllers
             }
             catch (Exception msg)
             {
-
                 ErrorViewModel errorViewModel = new ErrorViewModel();
                 errorViewModel.RequestId = msg.Message;
-
                 return View("_Error", errorViewModel);
             }
         }
 
-        // GET: Funcionarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //METODO PARA CRIPTAR A SENHA
+        private string ComputeHash(string input, SHA256CryptoServiceProvider algotithm)
         {
-            if (id == null)
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashBytes = algotithm.ComputeHash(inputBytes);
+            return BitConverter.ToString(hashBytes);
+        }
+
+        // GET: Funcionarios/Details/5
+        public IActionResult Details(int id)
+        {
+            if (id.Equals(null))
             {
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionarios
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (funcionario == null)
+            var funcionario = _apiConnector.GetById("Funcionario", id);
+            var result = JsonConvert.DeserializeObject<Funcionario>(funcionario);
+            if (result == null)
             {
                 return NotFound();
             }
-
-            return View(funcionario);
+            return View(result);
         }
 
         // GET: Funcionarios/Create
@@ -98,44 +114,38 @@ namespace Projeto_Rumos.Controllers
             return View();
         }
 
-        // POST: Funcionarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateFuncionario([Bind("Id,Nome,Email,Password,NumeroDeTrabalhador,Cargo")] Funcionario funcionario)
+        public IActionResult CreateFuncionario([Bind("Id,Nome,Email,Password,NumeroDeTrabalhador,Cargo")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(funcionario);
-                await _context.SaveChangesAsync();
+                _apiConnector.Post("Funcionarios", funcionario.ToString());
                 return RedirectToAction(nameof(Index));
             }
             return View(funcionario);
         }
 
         // GET: Funcionarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
+            if (id.Equals(null))
             {
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionarios.FindAsync(id);
-            if (funcionario == null)
+            var funcionario = _apiConnector.GetById("Funcionario", id);
+            var result = JsonConvert.DeserializeObject<Funcionario>(funcionario);
+            if (result == null)
             {
                 return NotFound();
             }
-            return View(funcionario);
+            return View(result);
         }
 
-        // POST: Funcionarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Password,NumeroDeTrabalhador,Cargo")] Funcionario funcionario)
+        public IActionResult Edit(int id, [Bind("Id,Nome,Email,Password,NumeroDeTrabalhador,Cargo")] Funcionario funcionario)
         {
             if (id != funcionario.Id)
             {
@@ -146,8 +156,7 @@ namespace Projeto_Rumos.Controllers
             {
                 try
                 {
-                    _context.Update(funcionario);
-                    await _context.SaveChangesAsync();
+                    _apiConnector.Update("Funcionario", funcionario.ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -166,37 +175,34 @@ namespace Projeto_Rumos.Controllers
         }
 
         // GET: Funcionarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+            if (id.Equals(null))
             {
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionarios
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (funcionario == null)
+            var funcionario = _apiConnector.GetById("Funcionario", id);
+            var result = JsonConvert.DeserializeObject<Funcionario>(funcionario);
+            if (result == null)
             {
                 return NotFound();
             }
-
-            return View(funcionario);
+            return View(result);
         }
 
         // POST: Funcionarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var funcionario = await _context.Funcionarios.FindAsync(id);
-            _context.Funcionarios.Remove(funcionario);
-            await _context.SaveChangesAsync();
+            _apiConnector.Delete("Funcionario", id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool FuncionarioExists(int id)
         {
-            return _context.Funcionarios.Any(e => e.Id == id);
+            return bool.Parse(_apiConnector.GetById("Funcionario",id));
         }
     }
 }

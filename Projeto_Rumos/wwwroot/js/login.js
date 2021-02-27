@@ -67,8 +67,11 @@ function apresentar(dados) {
     else if (dados.sucesso == false) {
         alert("Produto já está no carrinho...");
     }
-    else if (dados.necLogin == true) {
-        alert("Necessário login para adicionar produto");
+    else if (dados.notData == true) {
+        alert("Necessário uma quantidade do produto");
+    }
+    else if (dados.necessarioLogin == true) {
+        alert("Necessário efectuar login");
     }
 }
 
