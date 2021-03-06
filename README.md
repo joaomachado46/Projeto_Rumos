@@ -1,5 +1,5 @@
 # Projeto_Rumos
-https://joaomachado46.github.io/Projeto_Rumos/
+https://frutariag1.azurewebsites.net/
 
 Projeto da Rumos School, Criação de um e-commerce com acesso a bd através de Entity Framework, e usando uma Rest Api
 
