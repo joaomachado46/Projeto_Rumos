@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/rumosserver/databases/databaseforProjectRumos",
+      "type": "mssql.azure",
+      "connectionId": "ApiConnectionString",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

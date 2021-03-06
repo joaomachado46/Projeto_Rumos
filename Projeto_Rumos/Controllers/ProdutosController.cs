@@ -201,7 +201,7 @@ namespace Projeto_Rumos.Controllers
                             throw;
                         }
                     }
-                    return RedirectToAction(nameof(ListaProdutosGestao));
+                    return RedirectToAction(nameof(GestaoProduto));
                 }
                 return View(produto);
             }
@@ -247,7 +247,7 @@ namespace Projeto_Rumos.Controllers
             try
             {
                 _apiConnector.Delete("Produtos", id);
-                return RedirectToAction(nameof(ListaProdutosGestao));
+                return RedirectToAction(nameof(GestaoProduto));
             }
             catch (Exception msg)
             {
@@ -259,12 +259,12 @@ namespace Projeto_Rumos.Controllers
         }
 
         //ACTION PARA MOSTAR A LISTA DE PRODUTOS A SER GERIDA
-        public IActionResult ListaProdutosGestao()
-        {
-            var search = _apiConnector.Get("Produtos");
-            var result = JsonConvert.DeserializeObject<List<Produto>>(search);
-            return View(result.ToList());
-        }
+        //public IActionResult ListaProdutosGestao()
+        //{
+        //    var search = _apiConnector.Get("Produtos");
+        //    var result = JsonConvert.DeserializeObject<List<Produto>>(search);
+        //    return View(result.ToList());
+        //}
 
         public IActionResult GestaoProduto()
         {

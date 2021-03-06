@@ -14,10 +14,10 @@
         <div class="row">
             <nav class="navbar navbar-dark bg-dark">
                 <ul>
-                    <li><a href="#">CRIAR PRODUTO</a></li>
-                    <li><a href="#">GERIS FUNCIONARIOS</a></li>
-                    <li><a href="#">LOJA</a></li>
-                    <li><a href="#">LOGIN ADMIN</a></li>
+                    <li><a asp-controller="Produtos" asp-action="CreateProduto">CRIAR PRODUTO</a></li>
+                    <li><a asp-controller="Funcionarios" asp-action="Index">GERIS FUNCIONARIOS</a></li>
+                    <li><a asp-controller="Home" asp-action="Produto">LOJA</a></li>
+                    <li><a asp-controller="Funcionarios" asp-action="LoginFuncionario">LOGIN ADMIN</a></li>
                 </ul>
             </nav>
         </div>

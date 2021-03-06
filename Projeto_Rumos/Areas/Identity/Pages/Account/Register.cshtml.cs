@@ -17,6 +17,7 @@ using Projeto_Rumos.Areas.Identity.Pages.Account.UserData;
 using Models;
 using Projeto_Rumos.ApiConector;
 using WebApiFrutaria.DataContext;
+using Projeto_Rumos.Models;
 
 namespace Projeto_Rumos.Areas.Identity.Pages.Account
 {
@@ -91,8 +92,8 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                //try
-                //{
+                try
+                {
                     //REGISTO DE UM NOVO USUARIO NA CLASS USUARIO, PARA USO NO FINALIZAR DA ENCOMENDA.
                     Usuario Usuario = new Usuario
                     {
@@ -139,14 +140,14 @@ namespace Projeto_Rumos.Areas.Identity.Pages.Account
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
-                //}
-                //catch (Exception msg)
-                //{
-                //    ErrorViewModel errorViewModel = new ErrorViewModel();
-                //    errorViewModel.RequestId = msg.Message;
+                }
+                catch (Exception msg)
+                {
+                    ErrorViewModel errorViewModel = new ErrorViewModel();
+                    errorViewModel.RequestId = msg.Message;
 
-                //    return RedirectToAction("_Error", errorViewModel);
-                //}
+                    return RedirectToAction("_Error", errorViewModel);
+                }
             }
             // If we got this far, something failed, redisplay form
             return Page();

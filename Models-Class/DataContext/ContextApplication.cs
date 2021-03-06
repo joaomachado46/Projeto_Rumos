@@ -144,7 +144,7 @@ namespace WebApiFrutaria.DataContext
                 Email = "admin@gmail.com",
                 Password = "12345",
                 NumeroDeTrabalhador = 156,
-                Cargo = EnumCargo.Administrador,
+                Cargo = EnumCargo.Administrador.ToString(),
             });
 
             //modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser

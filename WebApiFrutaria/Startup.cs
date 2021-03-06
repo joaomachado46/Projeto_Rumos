@@ -30,7 +30,9 @@ namespace WebApiFrutaria
         {
 
             //CONECÇÃO A BASE DE DADOS
-            services.AddDbContext<ContextApplication>(options => options.UseSqlServer(Configuration.GetConnectionString("ApiConnectionString")));
+            var connection = Configuration.GetConnectionString("ApiConnectionString");
+
+            services.AddDbContext<ContextApplication>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("WebApiFrutaria")));
            
   
             //PARA ACEITAR VARIOS FORMATOS(necessario instalar o nuget: Microsoft.AspNetCore.Mvc.Formatters.Xml)

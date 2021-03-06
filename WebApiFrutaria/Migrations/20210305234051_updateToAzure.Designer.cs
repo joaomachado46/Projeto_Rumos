@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiFrutaria.DataContext;
 
 namespace WebApiFrutaria.Migrations
 {
     [DbContext(typeof(ContextApplication))]
-    partial class ContextApplicationModelSnapshot : ModelSnapshot
+    [Migration("20210305234051_updateToAzure")]
+    partial class updateToAzure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,9 +251,8 @@ namespace WebApiFrutaria.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Cargo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Cargo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -278,7 +279,7 @@ namespace WebApiFrutaria.Migrations
                         new
                         {
                             Id = 1,
-                            Cargo = "Administrador",
+                            Cargo = 3,
                             Email = "admin@gmail.com",
                             Nome = "Admin",
                             NumeroDeTrabalhador = 156,

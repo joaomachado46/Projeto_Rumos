@@ -88,7 +88,7 @@ namespace WebApiFrutaria.Controllers
                 var result = FuncionarioBusiness.Delete(id);
                 if (result == true)
                 {
-                    return NoContent();
+                    return Ok();
                 }
                 else
                 {

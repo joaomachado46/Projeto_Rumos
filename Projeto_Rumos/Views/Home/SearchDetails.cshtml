@@ -14,7 +14,12 @@
                     <form action="/CarrinhoCompras/Create/@Model.Id" method="post">
                         <label class="card-title">@Model.Nome</label>
                         <label class="card-text">@Model.Preco € KG</label>
-                        <label style="color: black; font-size: 16px;">@Model.Descricao</label>
+                        <div>
+                            <div class="spb-label-tooltip">
+                                <label for="unidades" class="">Quantidade (KG/UNI)</label>
+                            </div>
+                            <input type="number" step="any" name="properties[KG]" id="@Model.Id" placeholder="0" class="" style="width:38%">
+                        </div>
                         <br />
                         <button type="button" class="btn btn-primary fa fa-shopping-cart" onclick="encomendar(@Model.Id)"> Adicionar</button>
                     </form>

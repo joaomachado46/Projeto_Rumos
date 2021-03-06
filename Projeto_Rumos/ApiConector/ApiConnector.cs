@@ -14,7 +14,9 @@ namespace Projeto_Rumos.ApiConector
         private string Url { get; set; }
         public ApiConnector()
         {
-            Url = "https://localhost:44300/api/v1/";
+        
+            Url = "https://webapifrutaria.azurewebsites.net/api/v1/";
+            //Url = "https://localhost:44300/api/v1/";
         }
 
         public ApiConnector(string url)

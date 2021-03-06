@@ -30,7 +30,7 @@ namespace Projeto_Rumos
                 options.UseSqlServer(
                     Configuration.GetConnectionString("ApiConnectionString")));
 
-            
+
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ContextApplication>();
 
@@ -56,7 +56,7 @@ namespace Projeto_Rumos
                 options.AccessDeniedPath = "/AccessDeniedPathInfo";
             });
             //services.AddApiVersioning();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             //PARA ACEITAR VARIOS FORMATOS(necessario instalar o nuget: Microsoft.AspNetCore.Mvc.Formatters.Xml)
             services.AddMvc(options =>
             {

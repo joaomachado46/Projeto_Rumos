@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiFrutaria.DataContext;
 
 namespace WebApiFrutaria.Migrations
 {
     [DbContext(typeof(ContextApplication))]
-    partial class ContextApplicationModelSnapshot : ModelSnapshot
+    [Migration("20210306175406_updateClassFuncionario")]
+    partial class updateClassFuncionario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

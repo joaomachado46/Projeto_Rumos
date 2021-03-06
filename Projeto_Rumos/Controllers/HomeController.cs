@@ -115,18 +115,18 @@ namespace Projeto_Rumos.Controllers
         }
 
         // ACTION PARA MOSTRAR O DETALHE DO ARTIGO PROCURA PELA "LUPA"
-        public IActionResult SearchDetails(int id)
+        public IActionResult SearchDetails(string consulta)
         {
             try
             {
-                if (id.Equals(null))
+                if (consulta == null)
                 {
                     return NotFound();
                 }
-
-                var search = _apiConnector.GetById("Produtos", id);
-                var produto = JsonConvert.DeserializeObject<Produto>(search);
-                return View(produto);
+                var search = _apiConnector.Get("Produtos");
+                var listProdutos = JsonConvert.DeserializeObject<List<Produto>>(search);
+                var resultado = listProdutos.SingleOrDefault(m => m.Nome.Trim() == consulta.Trim());
+                return View(resultado);
             }
             catch (Exception msg)
             {
@@ -144,9 +144,9 @@ namespace Projeto_Rumos.Controllers
             {
                 var search = _apiConnector.Get("Produtos");
                 var listProdutos = JsonConvert.DeserializeObject<List<Produto>>(search);
-                var resultados = listProdutos.FirstOrDefault(m => m.Nome == consulta);
-
-                return View("SearchDetails", resultados.Id);
+                var resultado = listProdutos.FirstOrDefault(m => m.Nome.Trim() == consulta.Trim());
+                int id = resultado.Id;
+                return RedirectToAction("SearchDetails");
             }
             catch (Exception msg)
             {

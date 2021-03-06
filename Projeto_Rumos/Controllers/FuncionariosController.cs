@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models_Class.Enum;
 using Newtonsoft.Json;
 using Projeto_Rumos.ApiConector;
 using Projeto_Rumos.Models;
@@ -83,14 +84,6 @@ namespace Projeto_Rumos.Controllers
             }
         }
 
-        //METODO PARA CRIPTAR A SENHA
-        private string ComputeHash(string input, SHA256CryptoServiceProvider algotithm)
-        {
-            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-            byte[] hashBytes = algotithm.ComputeHash(inputBytes);
-            return BitConverter.ToString(hashBytes);
-        }
-
         // GET: Funcionarios/Details/5
         public IActionResult Details(int id)
         {
@@ -99,7 +92,7 @@ namespace Projeto_Rumos.Controllers
                 return NotFound();
             }
 
-            var funcionario = _apiConnector.GetById("Funcionario", id);
+            var funcionario = _apiConnector.GetById("Funcionarios", id);
             var result = JsonConvert.DeserializeObject<Funcionario>(funcionario);
             if (result == null)
             {
@@ -111,6 +104,14 @@ namespace Projeto_Rumos.Controllers
         // GET: Funcionarios/Create
         public IActionResult CreateFuncionario()
         {
+            List<Enum> listaDeCargos = new List<Enum>();
+
+            listaDeCargos.Add(EnumCargo.Administrador);
+            listaDeCargos.Add(EnumCargo.Empregado);
+            listaDeCargos.Add(EnumCargo.Primeiro_Encarregado);
+            listaDeCargos.Add(EnumCargo.Segundo_Encarregado);
+
+            ViewBag.ListaDeCargos = listaDeCargos;
             return View();
         }
 
@@ -120,7 +121,27 @@ namespace Projeto_Rumos.Controllers
         {
             if (ModelState.IsValid)
             {
-                _apiConnector.Post("Funcionarios", funcionario.ToString());
+                switch (funcionario.Cargo)
+                {
+                    case "Administrador":
+                        funcionario.Cargo = EnumCargo.Administrador.ToString();
+                    break;
+                    case "Empregado":
+                        funcionario.Cargo = EnumCargo.Empregado.ToString();
+                        break;
+                    case "Primeiro_Encarregado":
+                        funcionario.Cargo = EnumCargo.Primeiro_Encarregado.ToString();
+                        break;
+                    case "Segundo_Encarregado":
+                        funcionario.Cargo = EnumCargo.Segundo_Encarregado.ToString();
+                        break;
+
+                }
+                var senha = funcionario.Password;
+                var senhaEncriptada = ComputeHash(senha, new SHA256CryptoServiceProvider());
+                funcionario.Password = senhaEncriptada;
+                var funcionarioJson = JsonConvert.SerializeObject(funcionario);
+                _apiConnector.Post("Funcionarios", funcionarioJson);
                 return RedirectToAction(nameof(Index));
             }
             return View(funcionario);
@@ -134,7 +155,7 @@ namespace Projeto_Rumos.Controllers
                 return NotFound();
             }
 
-            var funcionario = _apiConnector.GetById("Funcionario", id);
+            var funcionario = _apiConnector.GetById("Funcionarios", id);
             var result = JsonConvert.DeserializeObject<Funcionario>(funcionario);
             if (result == null)
             {
@@ -156,7 +177,10 @@ namespace Projeto_Rumos.Controllers
             {
                 try
                 {
-                    _apiConnector.Update("Funcionario", funcionario.ToString());
+                    var senha = funcionario.Password;
+                    var senhaEncriptada = ComputeHash(senha, new SHA256CryptoServiceProvider());
+                    funcionario.Password = senhaEncriptada;
+                    _apiConnector.Update("Funcionarios", funcionario.ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -182,7 +206,7 @@ namespace Projeto_Rumos.Controllers
                 return NotFound();
             }
 
-            var funcionario = _apiConnector.GetById("Funcionario", id);
+            var funcionario = _apiConnector.GetById("Funcionarios", id);
             var result = JsonConvert.DeserializeObject<Funcionario>(funcionario);
             if (result == null)
             {
@@ -196,13 +220,21 @@ namespace Projeto_Rumos.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            _apiConnector.Delete("Funcionario", id);
+            _apiConnector.Delete("Funcionarios", id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool FuncionarioExists(int id)
         {
-            return bool.Parse(_apiConnector.GetById("Funcionario",id));
+            return bool.Parse(_apiConnector.GetById("Funcionarios",id));
+        }
+
+        //METODO PARA CRIPTAR A SENHA
+        private string ComputeHash(string input, SHA256CryptoServiceProvider algotithm)
+        {
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashBytes = algotithm.ComputeHash(inputBytes);
+            return BitConverter.ToString(hashBytes);
         }
     }
 }

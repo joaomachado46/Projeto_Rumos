@@ -21,9 +21,12 @@
                         <h4 class="card-title">@item.Nome</h4>
                         <p class="card-text" style="font-size: xx-large; font-style: italic; text-shadow: 1px 4px 7px #000000;">@item.Preco € KG</p>
 
-                        <div><div class="spb-label-tooltip">
-                            <label for="unidades" class="">Quantidade (KG/UNI)</label></div>
-                        <input type="number" step="any" name="properties[KG]" id="@item.Id" value="" class="" style="width:38%"></div>
+                        <div>
+                            <div class="spb-label-tooltip">
+                                <label for="unidades" class="">Quantidade (KG/UNI)</label>
+                            </div>
+                            <input type="number" step="any" name="properties[KG]" id="@item.Id" placeholder="0" class="" style="width:38%">
+                        </div>
 
                         <p style="color: black;font-size: 16px;text-shadow: 1px 4px 7px #000000">@item.Descricao</p>
                         <br />

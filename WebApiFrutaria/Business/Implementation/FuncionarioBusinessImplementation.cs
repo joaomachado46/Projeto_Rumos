@@ -33,12 +33,11 @@ namespace WebApiFrutaria.Business.Implementation
 
         public bool Delete(int id)
         {
-            if (id.Equals(null) == true)
-            {
-                var result = _repository.Delete(id);
-                if (result.Equals(true)) return result; 
-            }
-            return false;
+            if (id.Equals(null)) return false;
+
+            var result = _repository.Delete(id);
+            if (result.Equals(null)) return false;
+            return true;
         }
 
         public List<Funcionario> FindAll()

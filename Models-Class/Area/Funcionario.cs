@@ -30,6 +30,6 @@ namespace Models
         public int NumeroDeTrabalhador { get; set; }
 
         [Required]
-        public EnumCargo Cargo { get; set; }
+        public string Cargo { get; set; }
     }
 }
