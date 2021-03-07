@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yccaTImsMe7kLjHa7lAIoClXUCMiNkVNSsgXAty1V8IJZS+si9A/cpeL/lvoai2mKGsI2lsDXDY3L3d+AZuWzw==",
+  "dgSpecHash": "XHjpZu0MGskz0g3K9PPp149QgIu7ZV6nymKYSVU8cPbvl5tARmHpxfK7B2yp/uDqU7g4wg1tWt1i3TMBi3GwuA==",
   "success": true,
-  "projectFilePath": "C:\\VSEXERCICIOS\\Projeto_GitHub_Rumos\\Projeto_Rumos\\Models-Class\\Models-Class.csproj",
+  "projectFilePath": "C:\\VSEXERCICIOS\\PROJETO_RUMOS_GITHUB\\Projeto_Rumos\\Models-Class\\Models-Class.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joaop\\.nuget\\packages\\azure.core\\1.8.1\\azure.core.1.8.1.nupkg.sha512",
     "C:\\Users\\joaop\\.nuget\\packages\\azure.storage.blobs\\12.8.0\\azure.storage.blobs.12.8.0.nupkg.sha512",

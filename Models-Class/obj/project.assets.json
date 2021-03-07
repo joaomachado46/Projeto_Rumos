@@ -8555,11 +8555,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\VSEXERCICIOS\\Projeto_GitHub_Rumos\\Projeto_Rumos\\Models-Class\\Models-Class.csproj",
+      "projectUniqueName": "C:\\VSEXERCICIOS\\PROJETO_RUMOS_GITHUB\\Projeto_Rumos\\Models-Class\\Models-Class.csproj",
       "projectName": "Models-Class",
-      "projectPath": "C:\\VSEXERCICIOS\\Projeto_GitHub_Rumos\\Projeto_Rumos\\Models-Class\\Models-Class.csproj",
+      "projectPath": "C:\\VSEXERCICIOS\\PROJETO_RUMOS_GITHUB\\Projeto_Rumos\\Models-Class\\Models-Class.csproj",
       "packagesPath": "C:\\Users\\joaop\\.nuget\\packages\\",
-      "outputPath": "C:\\VSEXERCICIOS\\Projeto_GitHub_Rumos\\Projeto_Rumos\\Models-Class\\obj\\",
+      "outputPath": "C:\\VSEXERCICIOS\\PROJETO_RUMOS_GITHUB\\Projeto_Rumos\\Models-Class\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\joaop\\AppData\\Roaming\\NuGet\\NuGet.Config",
